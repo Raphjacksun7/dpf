@@ -1,0 +1,62 @@
+
+.stats {
+
+    .ant-col {
+        margin-top: 15px;
+        align-self: center;
+        text-align: center;
+    }
+    .ant-select-item {
+        font-size: 16px;
+    }
+    
+    .ant-select-selection-item {
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 1.4;
+    }
+
+    .d_btn_primary {
+        padding: 0 35px;
+    }
+
+    .ant-select {
+         display: block;
+     }
+
+     .ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector input{
+        text-align: center;
+        font-size: 16px;
+     }
+
+     .ant-statistic {
+        width: 89%;
+        .ant-statistic-content {
+            font-family: Mulish;
+            font-size: 40px;
+            font-weight: bold;
+            line-height: 50px;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-top: 1em;
+            color: rgb(37 39 51);
+         }
+    
+         .ant-statistic-title {
+            margin-bottom: 4px;
+            font-family: Mulish;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 19px;
+            line-height: 24px;
+            text-align: center;
+            letter-spacing: 0.4px;
+            color: #9FA2B4;
+            overflow-wrap: break-word;
+         }
+     }
+
+
+    
+}

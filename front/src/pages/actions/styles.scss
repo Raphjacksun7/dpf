@@ -1,0 +1,28 @@
+.add-new {
+  .d_btn_primary {
+    float: right;
+    padding: 0 26px;
+  }
+}
+
+.action-list {
+  .ant-list-item {
+    border-bottom: none;
+    background-color: #f7f7f8;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    padding: 10px 20px;
+    .extra-detail {
+      font-weight: 600;
+      color: #9ca3af;
+    }
+  }
+
+  .active {
+    background-color: #a1c6f7;
+    .extra-detail {
+      color: #484848;
+    }
+  }
+}

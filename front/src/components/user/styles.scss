@@ -1,0 +1,43 @@
+.ant-avatar {
+  font-size: 16px;
+  color: #ffffff;
+  background: #2f80ed;
+  border-radius: 50% !important;
+  .ant-avatar-string {
+    line-height: 2.9;
+  }
+}
+
+.ant-list-items {
+  margin: 0 40px;
+  .ant-switch,
+  .ant-btn {
+    float: right;
+  }
+  .ant-switch-checked {
+    background-color: #2eb85c;
+  }
+}
+.ant-form-item-explain,
+.ant-form-item-extra {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.ant-alert-with-description.ant-alert-no-icon {
+  padding: 5px 15px;
+  text-align: center;
+  color: #ec0202;
+  font-weight: 500;
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-message {
+  font-weight: 600;
+}
+.ant-notification-notice-message {
+  padding-right: 24px;
+}
+.ant-notification-close-icon {
+  color: #a0a0a0;
+}

@@ -1,0 +1,205 @@
+// Variable overrides
+
+
+// COREUI Style Overriding 
+
+
+a {
+  text-decoration: none !important;
+}
+
+.c-wrapper {
+  background: white;
+}
+
+.c-body {
+}
+
+.c-main {
+}
+
+.c-sidebar,
+.c-header,
+.c-subheader {
+  border: none !important;
+}
+
+.c-sidebar-nav {
+  margin-top: 4em;
+  margin-left: 2em;
+  color: rgba(0, 0, 21, 0.8);
+  background: transparent;
+  font-weight: 500;
+  font-family: "Montserrat";
+}
+
+.c-sidebar .c-sidebar-nav-title {
+  color: #69696d;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 1.5em;
+}
+
+.c-sidebar-nav-item {
+  margin-bottom: 0.4em;
+}
+
+.c-sidebar-nav-link {
+  svg {
+    flex: 0 0 56px;
+    color: rgba(0, 0, 21, 0.5);
+    margin-left: -1rem;
+    font-size: 1.09375rem;
+  }
+}
+
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link.c-active,
+.c-sidebar.c-sidebar-light .c-active.c-sidebar-nav-dropdown-toggle {
+  color: #2f80ed !important;
+  font-weight: 500;
+  font-size: 14px;
+  background: #eaf2fd !important;
+  border-radius: 4px;
+  svg {
+    color: #2f80ed !important;
+  }
+}
+
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:active {
+  color: #2f80ed !important;
+  font-weight: 500;
+  font-size: 14px;
+  background: #eaf2fd !important;
+  border-radius: 4px;
+  svg {
+    color: #2f80ed !important;
+  }
+}
+
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:active .c-sidebar-nav-icon {
+  color: #2f80ed !important;
+  transition: 0.3s;
+}
+
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover {
+  color: #2f80ed !important;
+  font-weight: 500;
+  font-size: 14px;
+  background: #eaf2fd !important;
+  border-radius: 4px;
+}
+
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover .c-sidebar-nav-icon {
+  color: #2f80ed !important;
+  font-weight: 500;
+  font-size: 14px;
+  background: #eaf2fd !important;
+  border-radius: 4px;
+}
+
+.c-sidebar .c-sidebar-brand {
+  background: #ffffff !important;
+}
+
+.c-footer {
+  background: #ffffff !important;
+  border: none !important;
+  font-family: "Montserrat";
+  font-weight: 500;
+  font-size: 12px;
+  margin: auto;
+}
+
+
+
+
+// Ant Design Style Overriding 
+
+.ant-menu-horizontal {
+    border: none;
+    right: 0;
+    position: absolute;
+}
+
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover {
+  border-color: #ffffff;
+}
+
+.ant-menu-submenu-title {
+  .username {
+    font-family: 'Mulish';
+    font-weight: 600;
+    margin-right: 15px;
+    color: #252733;
+  }
+  .ant-avatar {
+    font-size: 16px;
+    color: #ffffff;
+    background: #2F80ED;
+  }
+  .anticon  {
+    margin-right: -5px;
+    font-size: 20px;
+    color: #C5C7CD;
+  }
+}
+.ant-divider-vertical {
+  height: 2em;
+  border-left: 1px solid #DFE0EB;
+}
+
+.ant-divider-horizontal {
+  display: flex;
+  clear: both;
+  width: 80%;
+  min-width: 80%;
+  margin: 30px 0;
+  color: #DFE0EB;
+  border-width: 2px;
+}
+
+.ant-modal-content{
+  border-radius: 8px;
+  .ant-modal-close {
+    display: none;
+  }
+  .ant-modal-body {
+    padding: 60px;
+    .ant-typography {
+      margin-bottom: 1.5em;
+    }
+  }
+}
+
+.ant-modal-mask,.ant-modal-wrap {
+  z-index: 2000;
+}
+
+.ant-modal-footer {
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 60px 60px;
+  .ant-btn,.ant-btn-primary {
+    font-family: "Mulish";
+    font-weight: 700;
+    height: 35px;
+    background: #FFFFFF;
+    border: 1px solid #C9C9C9;
+    box-sizing: border-box;
+    box-shadow:none;
+    border-radius: 4px;
+    padding: 0 25px;
+  }
+  .ant-btn-primary  {
+    border: none;
+    background: #2F80ED;
+  }
+}
+
+.ant-notification {
+  z-index: 5000;
+}
+

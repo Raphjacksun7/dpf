@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+.ant-avatar {
+  font-size: 16px;
+  color: #ffffff;
+  background: #2f80ed;
+  border-radius: 50% !important;
+  .ant-avatar-string {
+    line-height: 2.9;
+  }
+}
+
+.add-new {
+  .d_btn_primary {
+    float: right;
+    padding: 0 26px;
+  }
+}
+
+.form {
+  margin-top: 35px;
+  .form-group {
+    font-family: "Poppins", sans-serif;
+    label {
+      font-weight: 600;
+    }
+    input {
+      font-weight: 400;
+      border: none;
+      box-sizing: border-box;
+      border-radius: 4px;
+      padding: 6.5px 12px;
+      font-size: 14px;
+      border-color: hsl(0, 0%, 80%);
+      border-style: solid;
+      border-width: 1px;
+    }
+  }
+}
+
+.block {
+  color: #252733;
+  font-family: "Mulish";
+  .title {
+    display: flex;
+    .badge {
+      padding: 0.6em;
+      border-radius: 0.8rem;
+      background-color: #d60303;
+      color: #fff;
+      height: 23px;
+      margin-left: 10px;
+      position: relative;
+      top: 10px;
+    }
+  }
+  .subtitle {
+    font-weight: bold;
+  }
+}
+
+.ant-upload.ant-upload-drag {
+  background: #e8f1ff;
+  border: 2px dashed #7f8185;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-message {
+  font-weight: 600;
+}
+.ant-notification-notice-message {
+  padding-right: 24px;
+}
+.ant-notification-close-icon {
+  color: #a0a0a0;
+}

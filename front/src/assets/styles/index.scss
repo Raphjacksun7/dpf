@@ -1,0 +1,23 @@
+/* ./src/index.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap");
+
+@import "antd/dist/antd.css";
+
+// If you want to override variables do it here
+@import "scss/_variables";
+
+/* Import CoreUI styles */
+@import "~@coreui/coreui/scss/coreui.scss";
+
+/* Some temp fixes */
+@import "scss/_fixes";
+
+// Frola custum styles
+// @import "scss/froala.scss";
+
+// If you want to add something do it here
+@import "scss/_custom";
+
+// Import Tailwind CSS
+@import "css/index.css";

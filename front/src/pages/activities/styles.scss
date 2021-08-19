@@ -1,0 +1,50 @@
+
+.ant-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .ant-list-item {
+      padding: 20px 0;
+  }
+
+  .ant-list-item-meta-title {
+    font-size: 16px;
+    line-height: 19px;
+    margin-bottom: 8px;
+    color: #343A40;
+  }
+
+  .ant-list-item-meta-description {
+    font-weight: 500;
+    font-size: 14px;
+    color: #ADB5BD;
+  }
+
+  .extra-detail {
+    font-size: 16px;
+    color: #737B8B;
+  }
+
+  .calendar-btn {
+    border: none;
+    vertical-align: middle;
+    svg {
+      color: #2f80ed;
+      font-size: 25px;
+      vertical-align: initial;
+    }
+  }
+
+  .add-new {
+    .d_btn_primary {
+        float: none;
+        padding: 0 26px;
+    }
+    .to-right {
+    float: right;
+    .ant-btn-icon-only {
+      margin: 0 30px;
+    }
+    }
+  }

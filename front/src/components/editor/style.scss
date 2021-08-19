@@ -1,0 +1,238 @@
+/***
+  This is a custum Froala SCSS style for the whole code base by Rapahel AVOCEGAMOU
+***/
+
+.fr-box {
+  margin: 1em 0;
+}
+
+#markdown-1,
+#markdown-2,
+#insertFile-1,
+#insertFile-2,
+#insertFiles-1,
+#insertFiles-2,
+#insertVideo-1,
+#insertVideo-2,
+.fr-second-toolbar,
+#html-1,
+#html-2 {
+  display: none;
+}
+
+.fr-wrapper {
+  border-bottom-color: #c4c4c4 !important;
+  div:nth-child(1) {
+    // display: none !important;
+  }
+}
+
+.fr-wrapper::-webkit-scrollbar {
+  width: 0.7em;
+}
+
+.fr-wrapper::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgb(255, 255, 255);
+  -webkit-box-shadow: inset 0 0 6px rgb(255, 255, 255);
+}
+
+.fr-wrapper::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  //   outline: 1px solid slategrey;
+  border-radius: 10px;
+}
+
+.fr-qi-helper {
+  a:nth-child(2) {
+    display: none !important;
+  }
+  a.fr-btn.fr-floating-btn {
+    padding: 0 10px 10px 10px !important;
+  }
+}
+
+.fr-toolbar {
+  border: none;
+  border-bottom: 1px solid #c4c4c4 !important;
+  border-radius: 0px !important;
+  .fr-newline {
+    height: 0;
+  }
+}
+
+
+.btn,
+.btn-primary {
+  background: #ffffff;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-weight: bold;
+  height: 35px;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-primary {
+  background: #1976d2;
+  border-color: #1976d2;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: #0f65bb;
+  border-color: #0f65bb;
+}
+
+.editor-header {
+  h4.ant-typography,
+  .ant-typography h4 {
+    margin-bottom: 0.2em;
+    font-family: "Montserrat";
+  }
+  h5.ant-typography,
+  .ant-typography h5 {
+    margin-top: 0.2em;
+    span {
+      background: rgb(26, 125, 216);
+      border-radius: 2px;
+      padding: 2px 8px;
+      color: rgb(241, 241, 241);
+      text-transform: capitalize;
+      font-size: 14px;
+    }
+  }
+}
+
+.ant-spin-dot-item {
+  padding: 20px;
+}
+
+.ant-spin-nested-loading > div > .ant-spin .ant-spin-text {
+  padding-top: 25px;
+  font-size: 20px;
+  font-family: "Mulish";
+}
+
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  margin: 8px 0;
+}
+
+/***
+
+Modal Style Sheet
+
+****/
+.user-list {
+  .search {
+    margin-bottom: 20px;
+    font-weight: 400;
+    padding: 6.5px 12px;
+    font-size: 14px;
+    border-color: #cccccc;
+    border-radius: 4px;
+    font-family: "Poppins";
+  }
+  .ant-list-split .ant-list-item {
+    border: none;
+  }
+
+  .list-item {
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .motif {
+    margin: 6px 0 10px 0;
+    p {
+      font-family: "Mulish";
+      font-weight: 600;
+    }
+    textarea.ant-input {
+      box-shadow: 1px 2px 3px #dadada;
+    }
+    .item-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-top: 10px;
+
+      button {
+        border: 1px solid #d1d5db;
+        padding: 1px 8px;
+        border-radius: 2px;
+        outline: none;
+      }
+      button:last-child {
+        margin-left: 10px;
+      }
+      .primary {
+        background-color: #0f65bb;
+        color: #fff;
+        border: none;
+      }
+    }
+  }
+
+  .ant-list {
+    height: 300px;
+    overflow: overlay;
+    box-shadow: inset 0px 0px 2px 1px #dedede;
+
+    .ant-list-item-meta {
+      cursor: pointer;
+    }
+
+    .ant-list-item-meta-title,
+    .ant-avatar .ant-avatar-string {
+      line-height: 2.5;
+    }
+
+    // .ant-list-item :active,
+    // .ant-list-item :focus {
+    //   background: #0f65bb;
+    // }
+
+    .ant-avatar-lg {
+      width: 35px;
+      height: 35px;
+
+      font-size: 14px;
+    }
+  }
+  .error-message {
+    margin-top: 1rem;
+    font-weight: 600;
+    color: #e22d00;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+  .ant-modal-footer {
+    display: none;
+  }
+}
+
+.ant-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ant-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #dadada;
+}
+
+.user-list-clicked {
+  .ant-list-item {
+    background: #2f80ed;
+    border-radius: 15px;
+    .ant-avatar {
+      background: #2f80ed;
+      color: #2f80ed;
+    }
+    .ant-list-item-meta-title {
+      color: white;
+    }
+  }
+}

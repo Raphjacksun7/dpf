@@ -1,0 +1,107 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+
+.dashboard {
+  margin-top: 100px;
+
+  .add-new {
+    display: inline-block;
+    margin-bottom: 2em;
+    width: 100%;
+    .d_btn_primary {
+        float: right;
+    }
+}
+
+
+  .card {
+    transition: box-shadow 0.2s;
+    margin-bottom: 3em;
+    border-radius: 8px;
+    border: 1px solid #dfe0eb;
+    background: #fff;
+    cursor: pointer;
+    h3 {
+      font-family: Mulish;
+      font-weight: bold;
+      font-size: 19px;
+      line-height: 24px;
+      text-align: center;
+      letter-spacing: 0.4px;
+      color: #9fa2b4;
+      margin: 1em 0 3em 0;
+    }
+    span {
+      color: #9fa2b4;
+      font-family: Mulish;
+      font-size: 60px;
+      line-height: 50px;
+      text-align: center;
+      letter-spacing: 1px;
+      margin-bottom: 1em;
+    }
+    .iconify {
+      color: rgb(157, 157, 157);
+      font-size: 89px;
+      margin: 0 auto;
+      margin-bottom: 0.2em;
+    }
+  }
+
+  .card:hover {
+    box-shadow: 2px 2px 5px 1px #e6e6e6;
+    transition: all 0.2s ease-out;
+    h3,
+    span,
+    .iconify {
+      color: #2f80ed;
+    }
+  }
+}
+
+
+.col-lg-4 {
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+.col-lg-4:last-child:nth-child(odd) {
+  // left:50%;
+  // transform:translateX(-50%); 
+}
+
+
+.form {
+    margin-top: 35px;
+    .form-group {
+        font-family: 'Poppins', sans-serif;
+        label {
+            font-weight: 600;
+        }
+        input, 
+        .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+            font-weight: 300;
+            // border: 1px solid #BCBCBC !important;
+            box-sizing: border-box;
+            border-radius: 6px;
+            padding: 6.5px 25px;
+            font-size: 14px;
+        }
+
+        .ant-select {
+            width: 100%;
+            input {
+                border: none !important;
+            }
+        }
+        .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+            height: 42px;
+        }
+    }
+}
+
+
+.ant-select-dropdown {
+    z-index: 2000;
+}

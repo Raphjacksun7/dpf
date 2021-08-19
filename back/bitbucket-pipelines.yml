@@ -1,0 +1,65 @@
+#  Template NodeJS Web Application for Azure Web App service
+
+#  This template allows you to deploy your NodeJS web application to Azure Web App Service.
+#  The workflow allows running tests, code linting and security scans on feature branches (as well as master).
+#  The NodeJS application will be validated after the code is merged to master and deployment can be triggered manually.
+
+# Prerequisites: $$AZURE_APP_ID, $AZURE_PASSWORD, $AZURE_TENANT_ID, $AZURE_RESOURCE_GROUP, $AZURE_APP_NAME setup in the Deployment variables.
+# For advanced cases, please, follow examples from the pipe's README https://bitbucket.org/microsoft/azure-web-apps-deploy/src/1.0.3/README.md
+
+
+image: node:14.0.0
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm install
+            - npm test
+      - step:
+          name: Code linting
+          script:
+            - npm install eslint
+            - npx eslint .
+          caches:
+            - node
+  branches:
+      master:
+        # - parallel:
+          - step:
+              name: Install & Build
+              caches:
+                - node
+              script:
+                - npm install
+                - npm run build
+
+          - step:
+              name: Zip All Files
+              script:
+                #  - apt update && apt install zip
+                # Exclude files to be ignored
+                # - zip -r app-$BITBUCKET_BUILD_NUMBER.zip . -x *.git* bitbucket-pipelines.yml
+                # - zip -r app-$BITBUCKET_BUILD_NUMBER.zip . -x *.git* bitbucket-pipelines.yml
+                - git archive --format=tar.gz master -o app.tar.gz
+                # - tar czfv application.tgz digitactapi2/
+              artifacts:
+                # - "*.zip"
+                - "app.tar.gz"
+
+          - step:
+              name: Deploy to Heroku
+              deployment: Production
+              script:
+                # Deploy to Heroku.
+                # See more detail at https://digitact.vercel.app
+                - pipe: atlassian/heroku-deploy:1.2.1
+                  variables:
+                      HEROKU_API_KEY: '$HEROKU_API_KEY'
+                      HEROKU_APP_NAME: '$HEROKU_APP_NAME'
+                      ZIP_FILE: "app.tar.gz"
+                      # WAIT: 'true'
