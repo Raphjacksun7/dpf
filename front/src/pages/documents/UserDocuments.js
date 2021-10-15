@@ -12,12 +12,14 @@ import {
   Avatar,
   Space,
   Tooltip,
+  Empty,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import AddDocument from "../../components/document/AddDocument";
 import { useDispatch, useSelector } from "react-redux";
 import documentImg from "../../assets/document.png";
 import { getUser } from "../../actions/user";
+import tagColor from "../../helpers/tagColor";
 import "./styles/document.scss";
 import moment from "moment";
 
@@ -25,6 +27,7 @@ const UserDocuments = ({ title, role }) => {
   const auth = useSelector((state) => state.auth.user);
   const user = useSelector((state) => state.user.user);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [folderFilter, setFolderFilter] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -91,9 +94,15 @@ const UserDocuments = ({ title, role }) => {
       dataIndex: "status",
       render: (status) => (
         <>
-          <Tag color={"volcano"} key={status}>
-            {status.toUpperCase()}
-          </Tag>
+          {status.isCancelled ? (
+            <>
+              <Tag className="tag-cancel">ANNULÉ</Tag>
+            </>
+          ) : (
+            <Tag className={tagColor(status.state)} key={status.state}>
+              {status.state.toUpperCase()}
+            </Tag>
+          )}
         </>
       ),
     },
@@ -159,16 +168,51 @@ const UserDocuments = ({ title, role }) => {
         <Col span={8} offset={8}>
           <div className="space-align-block">
             <Space size="large" align="baseline">
-              <Input placeholder="Rechercher" prefix={<SearchOutlined />} />
+              <Input
+                placeholder="Rechercher"
+                prefix={<SearchOutlined />}
+                style={{
+                  height: "40px",
+                  lineHeight: "30px",
+                  borderColor: "#8E8E93",
+                }}
+                value={folderFilter}
+                onChange={(e) => setFolderFilter(e.target.value.toLowerCase())}
+              />
             </Space>
           </div>
         </Col>
       </Row>
       {user ? (
         <Table
+          locale={{
+            emptyText: (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_DEFAULT}
+                imageStyle={{
+                  height: 60,
+                }}
+                description={<span>Aucun résultat trouvé</span>}
+              ></Empty>
+            ),
+          }}
           columns={columns}
-          dataSource={dataTable(user.assignedFolder)}
-          scroll={{ x: 1000 }}
+          dataSource={dataTable(user.assignedFolder)
+            .filter((item) => {
+              return (
+                item.document.name
+                  .toLowerCase()
+                  .indexOf(folderFilter.toLowerCase()) !== -1 ||
+                item.date.toLowerCase().indexOf(folderFilter.toLowerCase()) !==
+                  -1 ||
+                item.document.updatedAt
+                  .toLowerCase()
+                  .indexOf(folderFilter.toLowerCase()) !== -1
+              );
+            })
+            // To sort the array data by the last element created
+            .sort((a, b) => new Date(b.date) - new Date(a.date))}
+          scroll={{ x: 800 }}
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {

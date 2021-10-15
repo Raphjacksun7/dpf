@@ -35,7 +35,7 @@ export const questionnaire = [
         result: {
           message:
             "Géneration de l'Acte de Vente (ou Donation) de Morcellement de titre foncier",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
       {
@@ -44,7 +44,7 @@ export const questionnaire = [
         result: {
           message:
             "Géneration de l'Acte de Vente (ou Donation) avec Titre foncier",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
       {
@@ -53,7 +53,7 @@ export const questionnaire = [
         result: {
           message:
             "Géneration de l'Acte de Vente (ou Donation) avec Attestation de recasement",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
       {
@@ -62,7 +62,7 @@ export const questionnaire = [
         result: {
           message:
             "Géneration de l'Acte de Vente (ou Donation) avec convention de vente",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
     ],
@@ -77,7 +77,7 @@ export const questionnaire = [
         result: {
           message:
             "Génération d'une lettre de demande d'une attestation de recasement à partir de l'acte de vente",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
       {
@@ -86,7 +86,7 @@ export const questionnaire = [
         result: {
           message:
             "Génération d'une lettre de demande d'une attestation de recasement à partir de la convention de vente",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
       {
@@ -95,7 +95,7 @@ export const questionnaire = [
         result: {
           message:
             "Génération d'une lettre de mutation d'attestation de recasement",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
     ],
@@ -109,7 +109,7 @@ export const questionnaire = [
         option: "Attestation de recasement",
         result: {
           message: "Génération d'une lettre de demande d'un titre foncier",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
       {
@@ -128,7 +128,7 @@ export const questionnaire = [
         option: "Morcellement d'un titre foncier",
         result: {
           message: "Génération d'une lettre de morcellement d'un titre foncier",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
       {
@@ -136,7 +136,7 @@ export const questionnaire = [
         option: "Mutation d'un titre foncier",
         result: {
           message: "Génération d'une lettre de mutation d'un titre foncier",
-          url: "http://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
+          url: "https://res.cloudinary.com/digitact-storage/raw/upload/v1629218104/documents/acte_de_vente_mu4sh7",
         },
       },
     ],

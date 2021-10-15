@@ -1,14 +1,17 @@
 /* ./src/index.css */
 
+$enable-ltr: true;
+$enable-rtl: true;
+
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap");
 
-@import "antd/dist/antd.css";
+@import '~antd/dist/antd.css';
 
 // If you want to override variables do it here
 @import "scss/_variables";
 
 /* Import CoreUI styles */
-@import "~@coreui/coreui/scss/coreui.scss";
+@import "@coreui/coreui/scss/coreui";
 
 /* Some temp fixes */
 @import "scss/_fixes";

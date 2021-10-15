@@ -13,7 +13,7 @@ import {
 const initialState = {
   actes: [],
   acte: {},
-  folderActes:[],
+  folderActes: [],
 };
 
 const acteReducer = (state = initialState, action) => {
@@ -32,11 +32,11 @@ const acteReducer = (state = initialState, action) => {
         acte: payload,
       };
 
-      case FECTH_FOLDER_ACTE_SUCCESS:
-        return {
-          ...state,
-          folderActes: payload,
-        };
+    case FECTH_FOLDER_ACTE_SUCCESS:
+      return {
+        ...state,
+        folderActes: payload,
+      };
 
     case CREATE_ACTE_SUCCESS:
       return { ...state, actes: [payload, ...state.actes] };
@@ -49,8 +49,9 @@ const acteReducer = (state = initialState, action) => {
     case UPDATE_ACTE_SUCCESS:
       return {
         ...state,
+        acte: payload,
         actes: state.actes.map((acte) =>
-          acte.id === payload.id ? (acte = payload) : acte
+          acte._id === payload._id ? (acte = payload) : acte
         ),
       };
 
@@ -62,7 +63,7 @@ const acteReducer = (state = initialState, action) => {
     case DELETE_ACTE_SUCCESS:
       return {
         ...state,
-        actes: state.actes.filter((acte) => acte.id !== payload),
+        actes: state.actes.filter((acte) => acte._id !== payload),
       };
 
     case DELETE_ACTE_FAIL:

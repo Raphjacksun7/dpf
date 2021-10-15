@@ -13,7 +13,7 @@ import {
 const initialState = {
   dModels: [],
   dModel: {},
-  folderDModels:[],
+  folderDModels: [],
 };
 
 const dModelReducer = (state = initialState, action) => {
@@ -32,7 +32,7 @@ const dModelReducer = (state = initialState, action) => {
         dModel: payload,
       };
 
-      case FECTH_FOLDER_DMODELS_SUCCESS:
+    case FECTH_FOLDER_DMODELS_SUCCESS:
       return {
         ...state,
         folderDModels: payload,
@@ -49,8 +49,9 @@ const dModelReducer = (state = initialState, action) => {
     case UPDATE_DMODEL_SUCCESS:
       return {
         ...state,
+        dModel: payload,
         dModels: state.dModels.map((dModel) =>
-          dModel.id === payload.id ? (dModel = payload) : dModel
+          dModel._id === payload._id ? (dModel = payload) : dModel
         ),
       };
 
@@ -62,7 +63,7 @@ const dModelReducer = (state = initialState, action) => {
     case DELETE_DMODEL_SUCCESS:
       return {
         ...state,
-        dModels: state.dModels.filter((dModel) => dModel.id !== payload),
+        dModels: state.dModels.filter((dModel) => dModel._id !== payload),
       };
 
     case DELETE_DMODEL_FAIL:

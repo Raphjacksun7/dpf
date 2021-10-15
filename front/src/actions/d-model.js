@@ -12,6 +12,7 @@ import {
   SET_MESSAGE,
   UPDATE_DMODEL_FAIL,
   UPDATE_USER_SUCCESS,
+  UPDATE_DMODEL_SUCCESS,
 } from "./types";
 
 import * as DModelService from "../services/d-model.service";
@@ -21,7 +22,7 @@ export const getDModels = () => (dispatch) => {
     (response) => {
       dispatch({
         type: FECTH_DMODELS_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -53,7 +54,7 @@ export const getDModel = (id) => (dispatch) => {
     (response) => {
       dispatch({
         type: FECTH_DMODEL_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -80,13 +81,12 @@ export const getDModel = (id) => (dispatch) => {
   );
 };
 
-
 export const getDModelsByFolder = (id) => (dispatch) => {
   return DModelService.getDModelsByFolder(id).then(
     (response) => {
       dispatch({
         type: FECTH_FOLDER_DMODELS_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -113,7 +113,6 @@ export const getDModelsByFolder = (id) => (dispatch) => {
   );
 };
 
-
 export const createDModel = (data) => (dispatch) => {
   return DModelService.createDModel(data).then(
     (response) => {
@@ -124,7 +123,7 @@ export const createDModel = (data) => (dispatch) => {
 
       dispatch({
         type: SET_MESSAGE,
-        payload: response.data,
+        payload: response.data.message,
       });
 
       return Promise.resolve();
@@ -155,7 +154,7 @@ export const updateDModel = (id, data) => (dispatch) => {
   return DModelService.updateDModel(id, data).then(
     (response) => {
       dispatch({
-        type: UPDATE_USER_SUCCESS,
+        type: UPDATE_DMODEL_SUCCESS,
         payload: response.data,
       });
 
@@ -193,12 +192,12 @@ export const deleteDModel = (id) => (dispatch) => {
     (response) => {
       dispatch({
         type: DELETE_DMODEL_SUCCESS,
-        payload: id,
+        payload: response,
       });
 
       dispatch({
         type: SET_MESSAGE,
-        payload: response.data,
+        payload: response,
       });
 
       return Promise.resolve();
@@ -224,5 +223,3 @@ export const deleteDModel = (id) => (dispatch) => {
     }
   );
 };
-
-

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { Action } from './action.schema';
+import { Task } from './task.schema';
 import { Folder } from './folder.schema';
 
 @Schema()
@@ -24,7 +24,7 @@ export class User extends Document {
     assignedFolder: Folder[];
 
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Action' }],  required: false})
-    actions: Action[];
+    actions: Task[];
 
     @Prop({ default: Date.now })
     createdAt: Date;

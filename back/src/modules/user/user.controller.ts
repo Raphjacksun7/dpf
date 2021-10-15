@@ -2,6 +2,8 @@ import { Body, Controller, Get, HttpStatus, Param, Post, Res, Query, Put, Delete
 import { Schema as MongooseSchema } from 'mongoose';
 import { GetQueryDto } from '../../dto/getQueryDto';
 import { CreateUserDto } from './dto/createUser.dto';
+import { CreatePasswordDto } from './dto/createPassword.dto';
+import { DeleteUserFolderDto } from './dto/deleteUserFolder.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserService } from './user.service';
 
@@ -16,13 +18,13 @@ export class UserController {
     }
 
     @Get(':id')
-    async getUserById(@Param('id') id:any, @Res() res: any) {
+    async getUserById(@Param('id') id: any, @Res() res: any) {
         const user: any = await this.userService.getUserById(id);
         return res.status(HttpStatus.OK).send(user);
     }
 
     @Get(':id/folders')
-    async getUserFolders(id: any, @Res() res: any) {
+    async getUserFolders(@Param('id') id: any, @Res() res: any) {
         const folders: any = await this.userService.userAssignedFolder(id);
         return res.status(HttpStatus.OK).send(folders);
     }
@@ -33,22 +35,27 @@ export class UserController {
     }
 
     @Put(':id')
-    async update(id: any, @Body() updateUserDto: UpdateUserDto) {
+    async update(@Param('id') id: MongooseSchema.Types.ObjectId, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.updateUser(id, updateUserDto);
     }
 
-    @Put(':id/folders/new')
-    async addFolder(userId: any, @Body() folderId: any) {
-        return this.userService.assignFolder(userId, folderId);
+    @Put(':id/create-password')
+    async createPassword(@Param('id') id: MongooseSchema.Types.ObjectId, @Body() createPasswordDto: CreatePasswordDto) {
+        return this.userService.createPassword(id, createPasswordDto);
+    }
+
+    @Put(':id/folders/add')
+    async addFolder(@Param('id') userId: any, @Body() folderIds: any) {
+        return this.userService.assignFolder(userId, folderIds);
     }
 
     @Delete(':id')
-    async delete(id: any) {
+    async delete(@Param('id') id: any) {
         return this.userService.deleteUser(id);
     }
 
     @Delete(':id/folders/remove')
-    async removeFolder( userId:any, @Body() folderId: any) {
-        return this.userService.removeUserFolder(userId, folderId);
+    async removeFolder(@Param('id') userId: any, @Body() deleteUserFolder: DeleteUserFolderDto) {
+        return this.userService.removeUserFolder(userId, deleteUserFolder);
     }
 }

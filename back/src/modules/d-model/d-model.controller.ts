@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res, Query, Delete } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Res, Query, Delete, Put } from '@nestjs/common';
 
 import { GetQueryDto } from '../../dto/getQueryDto';
 import { CreateDModelDto } from './dto/createDModel.dto';
 import { DModelService } from './d-model.service';
+import { UpdateDModelDto } from './dto/updateDModel.dto';
 
 @Controller('d-models')
 export class DModelController {
@@ -29,6 +30,12 @@ export class DModelController {
     @Post()
     async create(@Body() createDModeleDto: CreateDModelDto) {
         return this.dModelService.createModel(createDModeleDto);
+    }
+
+    @Put(':id')
+    async updateFolder(@Param('id') id: any, @Body() updateDModelDto: UpdateDModelDto, @Res() res: any) {
+        const newDmodel: any = await this.dModelService.updateDModel(id, updateDModelDto);
+        return res.status(HttpStatus.OK).send(newDmodel);
     }
 
     @Delete(':id')

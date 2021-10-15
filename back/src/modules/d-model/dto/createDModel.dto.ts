@@ -18,6 +18,5 @@ export class CreateDModelDto {
 
     @IsOptional()
     @IsString()
-    @IsDate()
     readonly updatedAt: Date;
 }

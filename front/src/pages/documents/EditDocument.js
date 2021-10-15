@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import Select from "react-select";
 import {
   notification,
   Button,
@@ -14,6 +15,7 @@ import {
   Spin,
   Input,
   Skeleton,
+  Form,
 } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Editor } from "../../components";
@@ -27,18 +29,21 @@ import moneyIcon from "@iconify/icons-grommet-icons/money";
 import caretDownFill from "@iconify/icons-bi/caret-down-fill";
 import deleteIcon from "@iconify/icons-carbon/delete";
 
-import { getFolder } from "../../actions/folder";
-import { getDModel } from "../../actions/d-model";
+import { getFolder, updateFolder } from "../../actions/folder";
+import { getDModel, updateDModel, deleteDModel } from "../../actions/d-model";
 import { getUsers } from "../../actions/user";
 import { createTask } from "../../actions/task";
-import { deleteDModel } from "../../actions/d-model";
-import { updateFolder } from "../../actions/folder";
-import { updateDModel } from "../../actions/d-model";
 import { history } from "../../helpers/history";
-import { CLOUDINARY_NAME, UPLOAD_PRESET } from "../../constants";
+import {
+  BASE_URL,
+  CLOUDINARY_NAME,
+  LOCAL_URL,
+  UPLOAD_PRESET,
+} from "../../constants";
 import { connect } from "react-redux";
-import "./styles/document.scss";
 import { withRouter } from "react-router";
+import "./styles/document.scss";
+import { newTask } from "../../actions/mailer";
 
 class EditDocument extends React.Component {
   constructor() {
@@ -46,13 +51,16 @@ class EditDocument extends React.Component {
     this.onUserClicked = this.onUserClicked.bind(this);
     this.updateModel = this.updateModel.bind(this);
     this.deleteModel = this.deleteModel.bind(this);
+    this.modelParam = this.modelParam.bind(this);
+    this.formRef = React.createRef();
 
-    this.idModele = history.location.pathname.split("/")[3];
     this.state = {
       editModelLoading: false,
       saveModelLoading: false,
+      editParamModal: false,
       userListLoading: false,
-      userListModal: false,
+      userListReviewModal: false,
+      userListFinanceModal: false,
       userList: [],
       isUserClicked: false,
       errorUser: null,
@@ -62,7 +70,7 @@ class EditDocument extends React.Component {
   }
 
   componentDidMount() {
-    console.log(history.location,"het") 
+    console.log(this.props, "het");
     this.props.getUsers().then(() => {
       this.setState({
         userList: this.props.users.map((user) => {
@@ -73,9 +81,11 @@ class EditDocument extends React.Component {
         }),
       });
     });
-    this.props.getDModel(this.idModele).then(() => {
-      this.props.getFolder(this.props.dModel.folder);
-    });
+    this.props
+      .getDModel(this.props.history.location.pathname.split("/")[3])
+      .then(() => {
+        this.props.getFolder(this.props.dModel.folder);
+      });
   }
 
   onUserClicked(id) {
@@ -88,14 +98,14 @@ class EditDocument extends React.Component {
     });
   }
 
-  assign(user) {
+  assign(user, type) {
     const { auth, folder, dModel } = this.props;
     this.setState({
       userListLoading: true,
     });
     this.props
       .createTask({
-        taskType: "REVISION",
+        taskType: type,
         ressourceId: dModel._id,
         status: "ATTENTE",
         motif: this.state.motif,
@@ -103,17 +113,30 @@ class EditDocument extends React.Component {
         reciever: user._id,
       })
       .then((response) => {
-        console.log(response);
+        console.log(response, user);
         this.props
           .updateFolder(this.props.dModel.folder, {
             ...folder,
-            status: "REVISION",
+            status: type,
           })
           .then(() => {
+            this.props.newTask({
+              to: user.email,
+              variables: {
+                confirmation_link: `${BASE_URL}action/${response._id}`,
+                sender_motif: this.state.motif
+                  ? this.state.motif
+                  : "Aucune observation particulière ",
+                sender_name: auth.firstname + " " + auth.lastname,
+                user_first_name: user.firstname,
+                model_name: this.props.dModel.name,
+              },
+            });
             this.setState(
               {
                 userListLoading: false,
-                userListModal: false,
+                userListReviewModal: false,
+                userListFinanceModal: false,
               },
               notification.success({
                 message: `Vous avez assigné ce modèle à ${user.firstname} avec succès !`,
@@ -199,16 +222,16 @@ class EditDocument extends React.Component {
   }
 
   deleteModel() {
-    return Modal.confirm({
+    Modal.confirm({
       title: "Vous êtes sûr de vouloir supprimer ce modèle ?",
       icon: <ExclamationCircleOutlined />,
       content: "Veillez notez que cette action est irréversible",
       okText: "Oui",
       okType: "danger",
       cancelText: "Non",
-      onOk() {
+      onOk: () => {
         this.props
-          .deleteDModel(this.idModele)
+          .deleteDModel(this.props.history.location.pathname.split("/")[3])
           .then((response) => {
             console.log(response);
             history.goBack();
@@ -223,19 +246,54 @@ class EditDocument extends React.Component {
     });
   }
 
+  modelParam(data) {
+    this.props
+      .updateDModel(this.props.dModel._id, {
+        ...this.props.dModel,
+        name: data.modeleName,
+        modelType: data.modeleType.value,
+      })
+      .then(() => {
+        notification.success({
+          message: "Votre modèle a été mise à jour avec succès !",
+          description: null,
+          duration: 3,
+        });
+        this.setState({ editParamModal: false });
+      })
+      .catch((onSaveError) => {
+        notification.error({
+          message: "Une erreur !",
+          description: "La modification du modèle a échoué.",
+          duration: 3,
+        });
+        console.log(onSaveError);
+        this.setState({ editParamModal: false });
+      });
+  }
+
+  acteTypelist = () => {
+    return [
+      { value: "ACTE", label: "Un Acte" },
+      { value: "LETTER", label: "Une Lettre" },
+    ];
+  };
+
   render() {
     const { folder, dModel } = this.props;
     return (
       <>
         <div className="editor-header flex justify-between">
-          <div className="flex flex-wrap items-center">
-            <Typography.Title level={4}>{folder.name}</Typography.Title>
-            <Typography.Title level={5} className="block w-full">
-              <span>{dModel.name}</span>
+          <div className="flex items-center">
+            <Typography.Title level={3}>
+              {dModel.name}
+              <Typography.Title level={5} className="block w-full">
+                <span>{folder.name}</span>
+              </Typography.Title>
             </Typography.Title>
           </div>
 
-          <div className="flex flex-wrap items-center">
+          <div className="flex items-center">
             <Button
               className="btn-primary mr-3"
               icon={
@@ -248,9 +306,15 @@ class EditDocument extends React.Component {
                 const html =
                   '<!DOCTYPE html><html><head lang="fr">' +
                   '<meta charset="UTF-8"><title></title></head><body>' +
-                  document.getElementsByClassName("fr-element")[0].innerHTML +
+                  document
+                    .getElementsByTagName("iframe")[0]
+                    .contentWindow.document.getElementById("tinymce")
+                    .innerHTML +
                   "</body></html>";
                 this.updateModel(new Blob([html]));
+                // console.log(
+                //   document.getElementsByTagName("iframe")[0].contentWindow.document.getElementById('tinymce').innerHTML
+                // );
               }}
             >
               Enregistrer
@@ -266,8 +330,83 @@ class EditDocument extends React.Component {
                         style={{ color: "#3d3e3e", marginRight: "6px" }}
                       />
                     }
+                    onClick={() => {
+                      this.setState({ editParamModal: true });
+                    }}
                   >
-                    <span>Changer le type de modèle</span>
+                    <span>Paramètres du modèle</span>
+                    <Modal
+                      className="save-modal"
+                      okText="Modifier"
+                      cancelText="Retour"
+                      visible={this.state.editParamModal}
+                      onCancel={(e) => {
+                        e.stopPropagation();
+                        this.setState({ editParamModal: false });
+                      }}
+                      onOk={() => {
+                        this.formRef.current
+                          .validateFields()
+                          .then((formValues) => {
+                            console.log(formValues);
+                            this.modelParam(formValues);
+                          })
+                          .catch((info) => {
+                            console.log("Validate Failed:", info);
+                          });
+                      }}
+                    >
+                      <Typography.Title level={3}>
+                        Paramètres du modèle
+                      </Typography.Title>
+                      <Form
+                        ref={this.formRef}
+                        name="control-ref"
+                        className="form"
+                        initialValues={{
+                          modeleName: this.props.dModel.name,
+                          modeleType: this.props.dModel.modelType,
+                        }}
+                      >
+                        <div className="form-group">
+                          <label>Nom du modèle</label>
+                          <Form.Item
+                            name="modeleName"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Ce champ est obligatoire",
+                              },
+                            ]}
+                          >
+                            <input
+                              size="large"
+                              placeholder="EX: ACTE DE CONVENTION HOUSSOU"
+                              name="modeleName"
+                            />
+                          </Form.Item>
+                        </div>
+                        <div className="form-group">
+                          <label>Type de modèle</label>
+                          <Form.Item
+                            name="modeleType"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Ce champ est obligatoire",
+                              },
+                            ]}
+                          >
+                            <Select
+                              value={this.props.dModel.modelType}
+                              placeholder="Selectionner une reponse"
+                              isClearable="true"
+                              options={this.acteTypelist()}
+                            />
+                          </Form.Item>
+                        </div>
+                      </Form>
+                    </Modal>
                   </Menu.Item>
                   <Menu.Item
                     key="1"
@@ -278,16 +417,16 @@ class EditDocument extends React.Component {
                       />
                     }
                     onClick={() => {
-                      this.setState({ userListModal: true });
+                      this.setState({ userListReviewModal: true });
                     }}
                   >
                     <span>Assigner pour revison</span>
                     <Modal
                       className="user-list"
-                      visible={this.state.userListModal}
+                      visible={this.state.userListReviewModal}
                       onCancel={(e) => {
                         e.stopPropagation();
-                        this.setState({ userListModal: false });
+                        this.setState({ userListReviewModal: false });
                       }}
                     >
                       <Spin
@@ -387,7 +526,7 @@ class EditDocument extends React.Component {
                                     <button
                                       className="primary"
                                       onClick={() => {
-                                        this.assign(item);
+                                        this.assign(item, "REVISION");
                                       }}
                                     >
                                       Assigner
@@ -415,8 +554,134 @@ class EditDocument extends React.Component {
                         style={{ color: "#3d3e3e", marginRight: "6px" }}
                       />
                     }
+                    onClick={() => {
+                      this.setState({ userListFinanceModal: true });
+                    }}
                   >
                     <span>Validation financiere</span>
+                    <Modal
+                      className="user-list"
+                      visible={this.state.userListFinanceModal}
+                      onCancel={(e) => {
+                        e.stopPropagation();
+                        this.setState({ userListFinanceModal: false });
+                      }}
+                    >
+                      <Spin
+                        spinning={this.state.userListLoading}
+                        tip="Envoie de l'action en cours..."
+                      >
+                        <Input
+                          className="search"
+                          type="search"
+                          placeholder="Rechercher un utilisateur"
+                          value={this.state.userFilter}
+                          onChange={(e) =>
+                            this.setState({
+                              userFilter: e.target.value.toLowerCase(),
+                            })
+                          }
+                        ></Input>
+
+                        <List
+                          locale={{
+                            emptyText: (
+                              <Empty
+                                image={Empty.PRESENTED_IMAGE_DEFAULT}
+                                imageStyle={{
+                                  height: 60,
+                                }}
+                                description={
+                                  <span>
+                                    Aucun résultat trouvé
+                                  </span>
+                                }
+                              ></Empty>
+                            ),
+                          }}
+                          dataSource={this.state.userList.filter((item) => {
+                            return (
+                              item.firstname
+                                .toLowerCase()
+                                .indexOf(
+                                  this.state.userFilter.toLowerCase()
+                                ) !== -1 ||
+                              item.lastname
+                                .toLowerCase()
+                                .indexOf(
+                                  this.state.userFilter.toLowerCase()
+                                ) !== -1
+                            );
+                          })}
+                          renderItem={(item) => (
+                            <div className="list-item">
+                              <List.Item
+                                key={item.id}
+                                onClick={() => {
+                                  this.onUserClicked(item._id);
+                                }}
+                              >
+                                <Skeleton
+                                  loading={this.state.userList.length === 0}
+                                  active
+                                  avatar
+                                  paragraph={{ rows: 1 }}
+                                >
+                                  <List.Item.Meta
+                                    avatar={
+                                      <Avatar size="large">
+                                        {`${item.firstname} ${item.lastname}`
+                                          .match(/\b(\w)/g)
+                                          .join("")
+                                          .toUpperCase()}
+                                      </Avatar>
+                                    }
+                                    title={`${item.firstname} ${item.lastname}`}
+                                  />
+                                </Skeleton>
+                              </List.Item>
+
+                              {item.isClick ? (
+                                <div className="motif">
+                                  <p>Ajouter un motif</p>
+                                  <Input.TextArea
+                                    value={this.state.motif}
+                                    onChange={(e) => {
+                                      this.setState({
+                                        motif: e.target.value,
+                                      });
+                                    }}
+                                  ></Input.TextArea>
+                                  <div className="item-footer">
+                                    <button
+                                      onClick={() => {
+                                        this.onUserClicked(item._id);
+                                      }}
+                                    >
+                                      Annuler
+                                    </button>
+                                    <button
+                                      className="primary"
+                                      onClick={() => {
+                                        this.assign(item, "VALIDATION");
+                                      }}
+                                    >
+                                      Assigner pour VF
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : null}
+                            </div>
+                          )}
+                        ></List>
+
+                        {this.state.errorUser ? (
+                          <span className="error-message">
+                            {this.state.errorUser}
+                          </span>
+                        ) : null}
+                      </Spin>
+                    </Modal>
                   </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item
@@ -481,6 +746,7 @@ EditDocument.propTypes = {
   createTask: PropTypes.func.isRequired,
   deleteDModel: PropTypes.func.isRequired,
   updateFolder: PropTypes.func.isRequired,
+  newTask: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -490,17 +756,15 @@ const mapStateToProps = (state) => ({
   auth: state.auth.user,
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   loadUserData: () => dispatch(userActions.loadUserData()),
-// });
-
-
-export default withRouter(connect(mapStateToProps, {
-  getFolder,
-  getDModel,
-  getUsers,
-  createTask,
-  deleteDModel,
-  updateFolder,
-  updateDModel,
-})(EditDocument));
+export default withRouter(
+  connect(mapStateToProps, {
+    getFolder,
+    getDModel,
+    getUsers,
+    createTask,
+    deleteDModel,
+    updateFolder,
+    updateDModel,
+    newTask,
+  })(EditDocument)
+);

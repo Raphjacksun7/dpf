@@ -5,6 +5,9 @@ import { Folder } from './folder.schema';
 @Schema()
 export class Acte extends Document {
     @Prop({ required: true})
+    name: string;
+
+    @Prop({ required: true})
     acteType: string;
 
     @Prop({ required: true})

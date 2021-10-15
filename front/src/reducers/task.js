@@ -57,8 +57,15 @@ const taskReducer = (state = initialState, action) => {
     case UPDATE_TASK_SUCCESS:
       return {
         ...state,
+        task: payload,
         tasks: state.tasks.map((task) =>
-          task.id === payload.id ? (task = payload) : task
+          task._id === payload._id ? (task = payload) : task
+        ),
+        sender: state.sender.map((send) =>
+          send._id === payload._id ? (send = payload) : send
+        ),
+        reciever: state.reciever.map((recieved) =>
+          recieved._id === payload._id ? (recieved = payload) : recieved
         ),
       };
 
@@ -70,7 +77,7 @@ const taskReducer = (state = initialState, action) => {
     case DELETE_TASK_SUCCESS:
       return {
         ...state,
-        tasks: state.tasks.filter((task) => task.id !== payload),
+        tasks: state.tasks.filter((task) => task._id !== payload),
       };
 
     case DELETE_TASK_FAIL:

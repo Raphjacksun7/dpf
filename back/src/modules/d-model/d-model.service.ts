@@ -4,6 +4,7 @@ import { DModelRepository } from 'src/repositories/d-model.repository';
 import { GetQueryDto } from '../../dto/getQueryDto';
 
 import { CreateDModelDto } from './dto/createDModel.dto';
+import { UpdateDModelDto } from './dto/updateDModel.dto';
 
 @Injectable()
 export class DModelService {
@@ -23,6 +24,10 @@ export class DModelService {
 
     async getDModels(getQueryDto: GetQueryDto) {
         return await this.dModelRepository.get(getQueryDto);
+    }
+
+    async updateDModel(id, updateDModelDto: UpdateDModelDto) {
+        return await this.dModelRepository.updateDModel(id, updateDModelDto);
     }
 
     async deleteDModels(id: MongooseSchema.Types.ObjectId) {

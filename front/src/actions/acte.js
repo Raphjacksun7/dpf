@@ -11,7 +11,7 @@ import {
   FECTH_FOLDER_ACTE_SUCCESS,
   SET_MESSAGE,
   UPDATE_ACTE_FAIL,
-  UPDATE_USER_SUCCESS,
+  UPDATE_ACTE_SUCCESS,
 } from "./types";
 
 import * as ActeService from "../services/acte.service";
@@ -21,7 +21,7 @@ export const getActes = () => (dispatch) => {
     (response) => {
       dispatch({
         type: FECTH_ACTES_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -53,7 +53,7 @@ export const getActe = (id) => (dispatch) => {
     (response) => {
       dispatch({
         type: FECTH_ACTE_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -80,13 +80,12 @@ export const getActe = (id) => (dispatch) => {
   );
 };
 
-
 export const getActesByFolder = (id) => (dispatch) => {
   return ActeService.getActesByFolder(id).then(
     (response) => {
       dispatch({
         type: FECTH_FOLDER_ACTE_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -112,7 +111,6 @@ export const getActesByFolder = (id) => (dispatch) => {
     }
   );
 };
-
 
 export const createActe = (data) => (dispatch) => {
   return ActeService.createActe(data).then(
@@ -155,7 +153,7 @@ export const updateActe = (id, data) => (dispatch) => {
   return ActeService.updateActe(id, data).then(
     (response) => {
       dispatch({
-        type: UPDATE_USER_SUCCESS,
+        type: UPDATE_ACTE_SUCCESS,
         payload: response.data,
       });
 
@@ -224,5 +222,3 @@ export const deleteActe = (id) => (dispatch) => {
     }
   );
 };
-
-

@@ -10,8 +10,8 @@ export class CreateClientDto {
     @IsNotEmpty()
     readonly lastname: string;
 
-    @IsString()
-    readonly idCardUrl: string;
+    @IsArray()
+    readonly associatedDocuments: any[];
 
     @IsArray()
     readonly folders: Folder[];

@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
     @IsString()
@@ -21,6 +21,10 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     role: string;
+
+    @IsOptional()
+    @IsArray()
+    assignedFolder: string[];
 
     @IsOptional()
     @IsString()

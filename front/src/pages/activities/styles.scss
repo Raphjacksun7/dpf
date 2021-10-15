@@ -1,50 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
 .ant-avatar {
-    width: 45px;
-    height: 45px;
-  }
+  width: 45px;
+  height: 45px;
+}
 
-  .ant-list-item {
-      padding: 20px 0;
-  }
+.ant-list-item {
+  padding: 20px 0;
+}
 
-  .ant-list-item-meta-title {
-    font-size: 16px;
-    line-height: 19px;
-    margin-bottom: 8px;
-    color: #343A40;
-  }
+.ant-list-item-meta-title {
+  font-size: 16px;
+  line-height: 19px;
+  margin-bottom: 8px;
+  color: #343a40;
+}
 
-  .ant-list-item-meta-description {
-    font-weight: 500;
-    font-size: 14px;
-    color: #ADB5BD;
-  }
+.ant-list-item-meta-description {
+  font-weight: 500;
+  font-size: 14px;
+  color: #adb5bd;
+}
 
-  .extra-detail {
-    font-size: 16px;
-    color: #737B8B;
-  }
+.extra-detail {
+  font-size: 16px;
+  color: #737b8b;
+}
 
-  .calendar-btn {
-    border: none;
-    vertical-align: middle;
-    svg {
-      color: #2f80ed;
-      font-size: 25px;
-      vertical-align: initial;
-    }
+.calendar-btn {
+  border: none;
+  vertical-align: middle;
+  svg {
+    color: #2f80ed;
+    font-size: 25px;
+    vertical-align: initial;
   }
+}
 
-  .add-new {
-    .d_btn_primary {
-        float: none;
-        padding: 0 26px;
-    }
-    .to-right {
+.add-new {
+  .d_btn_primary {
+    float: none;
+    padding: 0 26px;
+  }
+  .to-right {
     float: right;
     .ant-btn-icon-only {
       margin: 0 30px;
     }
-    }
   }
+}
+
+.ant-picker-dropdown {
+  z-index: 5000;
+}
+
+.form .form-group input {
+  width: 100%;
+  outline: #2f80ed;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range,
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item--selected {
+  background-color: #2f80ed;
+}

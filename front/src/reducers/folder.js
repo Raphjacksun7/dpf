@@ -7,6 +7,14 @@ import {
   DELETE_FOLDER_FAIL,
   CREATE_FOLDER_FAIL,
   FECTH_FOLDER_SUCCESS,
+  REMOVE_FOLDER_USER_FAIL,
+  REMOVE_FOLDER_USER_SUCCESS,
+  ADD_FOLDER_USER_FAIL,
+  ADD_FOLDER_USER_SUCCESS,
+  ADD_FOLDER_CLIENT_SUCCESS,
+  ADD_FOLDER_CLIENT_FAIL,
+  REMOVE_FOLDER_CLIENT_SUCCESS,
+  REMOVE_FOLDER_CLIENT_FAIL,
 } from "../actions/types";
 
 const initialState = {
@@ -41,8 +49,9 @@ const folderReducer = (state = initialState, action) => {
     case UPDATE_FOLDER_SUCCESS:
       return {
         ...state,
+        folder: payload,
         folders: state.folders.map((folder) =>
-          folder.id === payload.id ? (folder = payload) : folder
+          folder._id === payload._id ? (folder = payload) : folder
         ),
       };
 
@@ -51,10 +60,66 @@ const folderReducer = (state = initialState, action) => {
         ...state,
       };
 
+    case ADD_FOLDER_USER_SUCCESS:
+      return {
+        ...state,
+        folder: payload,
+        folders: state.folders.map((folder) =>
+          folder._id === payload._id ? (folder = payload) : folder
+        ),
+      };
+
+    case ADD_FOLDER_USER_FAIL:
+      return {
+        ...state,
+      };
+
+    case REMOVE_FOLDER_USER_SUCCESS:
+      return {
+        ...state,
+        folder: payload,
+        folders: state.folders.map((folder) =>
+          folder._id === payload._id ? (folder = payload) : folder
+        ),
+      };
+
+    case REMOVE_FOLDER_USER_FAIL:
+      return {
+        ...state,
+      };
+
+    case ADD_FOLDER_CLIENT_SUCCESS:
+      return {
+        ...state,
+        folder: payload,
+        folders: state.folders.map((folder) =>
+          folder._id === payload._id ? (folder = payload) : folder
+        ),
+      };
+
+    case ADD_FOLDER_CLIENT_FAIL:
+      return {
+        ...state,
+      };
+
+    case REMOVE_FOLDER_CLIENT_SUCCESS:
+      return {
+        ...state,
+        folder: payload,
+        folders: state.folders.map((folder) =>
+          folder._id === payload._id ? (folder = payload) : folder
+        ),
+      };
+
+    case REMOVE_FOLDER_CLIENT_FAIL:
+      return {
+        ...state,
+      };
+
     case DELETE_FOLDER_SUCCESS:
       return {
         ...state,
-        folders: state.folders.filter((folder) => folder.id !== payload),
+        folders: state.folders.filter((folder) => folder._id !== payload),
       };
 
     case DELETE_FOLDER_FAIL:

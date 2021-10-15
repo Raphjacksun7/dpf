@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Typography,
   Modal,
@@ -11,10 +12,9 @@ import {
 } from "antd";
 import { Icon } from "@iconify/react";
 import cloudUpload from "@iconify/icons-cil/cloud-upload";
-
 import { useDispatch } from "react-redux";
 import { createClient } from "../../actions/client";
-
+import { CLOUDINARY_NAME, UPLOAD_PRESET } from "../../constants";
 import "./styles.scss";
 
 const { Title } = Typography;
@@ -26,58 +26,77 @@ const AddClient = ({ visible, onCreate, onCancel }) => {
     message: "Ce champ est obligatoire",
   };
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const [docFile, setDocFile] = useState(null);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
-
   const dispatch = useDispatch();
 
-  const saveUser = (data) => {
-    const client = {
-      firstname: data.firstname,
-      lastname: data.lastname,
-      idCardUrl: "",
-      folders: [],
-    };
-    setConfirmLoading(true);
-    dispatch(createClient(client))
-      .then((data) => {
-        console.log(data);
-        form.resetFields();
-        notification.success({
-          message: "Le client à été ajoute avec succès !",
-          description: null,
-          duration: 2,
-        });
-        setConfirmLoading(false);
-        setErrorMessage(null);
-        onCreate(data);
-      })
-      .catch((error) => {
-        setErrorMessage(error);
-        console.log(error);
-        setConfirmLoading(false);
-      });
+  const uploadProps = {
+    showUploadList: false,
+    accept: "*",
+    beforeUpload(file) {
+      console.log(file);
+      setDocFile(file);
+    },
   };
 
-  const props = {
-    name: "file",
-    multiple: true,
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    onChange(info) {
-      const { status } = info.file;
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
+  const saveClient = (data) => {
+    let { idCard } = data;
+    setConfirmLoading(true);
+    const formData = new FormData();
+    formData.append("file", idCard.file.originFileObj);
+    formData.append("upload_preset", UPLOAD_PRESET);
+    formData.append("cloud_name", CLOUDINARY_NAME);
+    try {
+      axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/upload`,
+          formData
+        )
+        .then(async (uploadRes) => {
+          console.log(uploadRes);
+          dispatch(
+            createClient({
+              firstname: data.firstname,
+              lastname: data.lastname,
+              associatedDocuments: [
+                {
+                  id: uploadRes.data.public_id,
+                  name: uploadRes.data.original_filename,
+                  url: uploadRes.data.url,
+                  format: uploadRes.data.format,
+                },
+              ],
+              folders: [],
+            })
+          )
+            .then(() => {
+              form.resetFields();
+              notification.success({
+                message: "Le client à été ajoute avec succès !",
+                description: null,
+                duration: 2,
+              });
+              setConfirmLoading(false);
+              setErrorMessage(null);
+              onCreate(data);
+            })
+            .catch((onSaveError) => {
+              setErrorMessage(onSaveError);
+              console.log(onSaveError);
+              setConfirmLoading(false);
+            });
+        })
+        .catch((uploadError) => {
+          setErrorMessage(
+            "L'upload du fichier a echoué, verifier votre connexion internet et reéssayer"
+          );
+          console.log(uploadError);
+          setConfirmLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -93,7 +112,7 @@ const AddClient = ({ visible, onCreate, onCancel }) => {
           form
             .validateFields()
             .then((values) => {
-              saveUser(values);
+              saveClient(values);
             })
             .catch((info) => {
               console.log("Validate Failed:", info);
@@ -127,15 +146,39 @@ const AddClient = ({ visible, onCreate, onCancel }) => {
                 },
               ]}
             >
-              <Dragger {...props}>
-                <p className="ant-upload-text">
-                  <Icon
-                    icon={cloudUpload}
-                    style={{ fontSize: "34px", marginRight: "10px" }}
-                  />
-                  Faites glisser le fichier ici ou <strong>parcourez</strong>
-                </p>
-              </Dragger>
+              <Upload.Dragger
+                {...uploadProps}
+                style={
+                  docFile
+                    ? { borderColor: "#00b94a", background: "#ecfffe" }
+                    : null
+                }
+              >
+                {docFile ? (
+                  <p
+                    className="ant-upload-text"
+                    style={{
+                      fontSize: "13px",
+                      display: "contents",
+                      whiteSpace: "break-spaces",
+                    }}
+                  >
+                    <Icon
+                      icon={cloudUpload}
+                      style={{ fontSize: "34px", marginRight: "10px" }}
+                    />
+                    {docFile.name}
+                  </p>
+                ) : (
+                  <p className="ant-upload-text">
+                    <Icon
+                      icon={cloudUpload}
+                      style={{ fontSize: "34px", marginRight: "10px" }}
+                    />
+                    Faites glisser le fichier ici ou <strong>parcourez</strong>
+                  </p>
+                )}
+              </Upload.Dragger>
             </Form.Item>
           </div>
           <div className="form-group">

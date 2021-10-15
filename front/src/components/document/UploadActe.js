@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
+import axios from "axios";
 import {
   Alert,
   Typography,
@@ -12,14 +13,11 @@ import {
   notification,
 } from "antd";
 import { Icon } from "@iconify/react";
-import axios from "axios";
 import cloudUpload from "@iconify/icons-cil/cloud-upload";
 
 import { createActe } from "../../actions/acte";
 import { CLOUDINARY_NAME, UPLOAD_PRESET } from "../../constants";
 import "./styles.scss";
-
-const { Title } = Typography;
 
 const UploadActe = ({ visible, onCreate, onCancel }) => {
   const rule = {
@@ -46,23 +44,6 @@ const UploadActe = ({ visible, onCreate, onCancel }) => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-
-  const uploadDocFile = async (file) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", UPLOAD_PRESET);
-    data.append("cloud_name", CLOUDINARY_NAME);
-    try {
-      axios
-        .post(`https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/upload`, data)
-        .then(async (data) => {
-          console.log(data);
-          setUrl(data.url);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const uploadProps = {
     showUploadList: false,
@@ -144,9 +125,9 @@ const UploadActe = ({ visible, onCreate, onCancel }) => {
             });
         }}
       >
-        <Title level={2} style={{ textAlign: "center", fontWeight: "bold" }}>
+        <Typography.Title level={2} style={{ textAlign: "center", fontWeight: "bold" }}>
           Ajouter un acte
-        </Title>
+        </Typography.Title>
         {errorMessage ? (
           <Alert description={errorMessage} type="error" />
         ) : null}

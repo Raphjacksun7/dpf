@@ -14,16 +14,19 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { CloudinaryProvider } from './modules/cloudinary/cloudinary.provider';
 import { DModelModule } from './modules/d-model/d-model.module';
 import { ActeModule } from './modules/acte/acte.module';
+import { TaskModule } from './modules/task/task.module';
+import { MailerModule } from './modules/mailer/mailer.module';
 
 @Module({
     imports: [
         ConfigModule,
         // MongoDB Connection
-        MongooseModule.forRoot("mongodb://127.0.0.1:27017/digitactDb"),
-        // MongooseModule.forRootAsync({
-        //     inject: [ConfigService],
-        //     useFactory: (configService: ConfigService) => configService.getMongoConfig() as MongooseModuleAsyncOptions,
-        // }),
+        // MongooseModule.forRoot("mongodb://127.0.0.1:27017/digitactDb"),
+        MongooseModule.forRootAsync({
+            inject: [ConfigService],
+            useFactory: (configService: ConfigService) => configService.getMongoConfig() as MongooseModuleAsyncOptions,
+        }),
+        TaskModule,
         ClientModule,
         FolderModule,
         ActeModule,
@@ -31,6 +34,7 @@ import { ActeModule } from './modules/acte/acte.module';
         AuthModule,
         CloudinaryModule,
         DModelModule,
+        MailerModule,
     ],
     controllers: [AppController, AuthController],
     providers: [AppService, CloudinaryProvider],

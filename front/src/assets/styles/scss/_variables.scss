@@ -1,8 +1,6 @@
 // Variable overrides
 
-
-// COREUI Style Overriding 
-
+// COREUI Style Overriding
 
 a {
   text-decoration: none !important;
@@ -112,15 +110,12 @@ a {
   margin: auto;
 }
 
-
-
-
-// Ant Design Style Overriding 
+// Ant Design Style Overriding
 
 .ant-menu-horizontal {
-    border: none;
-    right: 0;
-    position: absolute;
+  border: none;
+  right: 0;
+  position: absolute;
 }
 
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover {
@@ -129,7 +124,7 @@ a {
 
 .ant-menu-submenu-title {
   .username {
-    font-family: 'Mulish';
+    font-family: "Mulish";
     font-weight: 600;
     margin-right: 15px;
     color: #252733;
@@ -137,17 +132,17 @@ a {
   .ant-avatar {
     font-size: 16px;
     color: #ffffff;
-    background: #2F80ED;
+    background: #2f80ed;
   }
-  .anticon  {
+  .anticon {
     margin-right: -5px;
     font-size: 20px;
-    color: #C5C7CD;
+    color: #c5c7cd;
   }
 }
 .ant-divider-vertical {
   height: 2em;
-  border-left: 1px solid #DFE0EB;
+  border-left: 1px solid #dfe0eb;
 }
 
 .ant-divider-horizontal {
@@ -156,24 +151,25 @@ a {
   width: 80%;
   min-width: 80%;
   margin: 30px 0;
-  color: #DFE0EB;
+  color: #dfe0eb;
   border-width: 2px;
 }
 
-.ant-modal-content{
+.ant-modal-content {
   border-radius: 8px;
   .ant-modal-close {
     display: none;
   }
   .ant-modal-body {
-    padding: 60px;
+    padding: 30px;
     .ant-typography {
       margin-bottom: 1.5em;
     }
   }
 }
 
-.ant-modal-mask,.ant-modal-wrap {
+.ant-modal-mask,
+.ant-modal-wrap {
   z-index: 2000;
 }
 
@@ -182,20 +178,21 @@ a {
   display: flex;
   justify-content: space-between;
   padding: 0px 60px 60px;
-  .ant-btn,.ant-btn-primary {
+  .ant-btn,
+  .ant-btn-primary {
     font-family: "Mulish";
     font-weight: 700;
     height: 35px;
-    background: #FFFFFF;
-    border: 1px solid #C9C9C9;
+    background: #ffffff;
+    border: 1px solid #c9c9c9;
     box-sizing: border-box;
-    box-shadow:none;
+    box-shadow: none;
     border-radius: 4px;
     padding: 0 25px;
   }
-  .ant-btn-primary  {
+  .ant-btn-primary {
     border: none;
-    background: #2F80ED;
+    background: #2f80ed;
   }
 }
 
@@ -203,3 +200,257 @@ a {
   z-index: 5000;
 }
 
+.form {
+  margin-top: 35px;
+  .form-group {
+    font-family: "Poppins", sans-serif;
+    label {
+      font-weight: 600;
+    }
+    input {
+      font-weight: 400;
+      border: none;
+      box-sizing: border-box;
+      border-radius: 4px;
+      padding: 6.5px 12px;
+      font-size: 14px;
+      border-color: hsl(0, 0%, 80%);
+      border-style: solid;
+      border-width: 1px;
+      width: 100%;
+    }
+  }
+  .form-footer {
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    .ant-btn,
+    .ant-btn-primary {
+      font-family: "Mulish";
+      font-weight: 700;
+      height: 35px;
+      background: #ffffff;
+      border: 1px solid #c9c9c9;
+      box-sizing: border-box;
+      box-shadow: none;
+      border-radius: 4px;
+      padding: 0 25px;
+    }
+    .ant-btn-primary {
+      border: none;
+      background: #2f80ed;
+    }
+  }
+}
+
+.skeleton-s1 {
+  .ant-skeleton-paragraph {
+    li:nth-child(1),
+    li:nth-child(2) {
+      display: none !important;
+    }
+  }
+}
+
+.validation-modal {
+  .ant-modal-body {
+    padding: 55px 55px 30px;
+  }
+  span {
+    font-size: 18px;
+    font-weight: 500;
+    color: #4a4747;
+  }
+  textarea.ant-input {
+    margin-top: 5px;
+    border-radius: 5px;
+    background: #f6f6f6;
+    font-weight: 500;
+  }
+  .ant-modal-footer {
+    .ant-btn-primary span {
+      color: white;
+    }
+  }
+
+  input {
+    -webkit-user-select: all;
+    user-select: all;
+    padding: 10px;
+    display: block;
+    overflow: auto;
+  }
+
+  input:focus {
+    outline: none;
+    animation: select 100ms step-end forwards;
+  }
+
+  @keyframes select {
+    to {
+      -webkit-user-select: text;
+      user-select: text;
+    }
+  }
+}
+
+.upload {
+  .ant-upload.ant-upload-select {
+    width: 100%;
+  }
+}
+
+.option-btn {
+  font-family: "Mulish";
+  border: 2px solid #dddddd;
+  border-radius: 6px;
+  background: #f9f9f9;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  svg {
+    font-size: 18px;
+    margin-right: 8px;
+    color: #9f9f9f;
+  }
+  .svg-small {
+    font-size: 20px;
+  }
+}
+
+.option-btn:hover {
+  border: 2px solid #81baf1;
+  background: #ebf6ff;
+  span,
+  svg {
+    color: #0360ba;
+    // font-weight: 500;
+  }
+}
+
+.preview-document {
+  width: 700px !important;
+  top: 45px;
+  .ant-modal-body {
+    img {
+      object-fit: contain;
+      height: 700px;
+      width: 100%;
+    }
+  }
+  .preview-header {
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: solid 1px #d9d8d8;
+    .preview-action {
+      .edit-title,
+      .delete {
+        margin-left: 20px;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .edit-block {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    input {
+      border: none;
+    }
+    button {
+      margin-left: 25px;
+      background: #0076b9;
+      border-color: #0376b1;
+      border-radius: 2px;
+    }
+  }
+
+  .ant-result-info {
+    svg {
+      font-size: 12em;
+    }
+    .format {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      background: #cdcdcd;
+      border-radius: 2px;
+      padding: 5px 20px;
+      font-size: 1em;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: white;
+    }
+    .ant-result-title {
+      font-family: "Mulish";
+      font-weight: 300;
+      font-size: 12px;
+      line-height: 18px;
+      text-align: center;
+      color: #8b8484;
+      width: 50%;
+      margin: auto;
+    }
+  }
+  .ant-btn-primary {
+    background: #1976d2;
+    border-color: #1976d2;
+    border-radius: 2px;
+  }
+}
+
+.ant-tag {
+  color: #ffffff;
+}
+
+.tag-acte {
+  background-color: #009688;
+  border-color: #009688;
+}
+
+.tag-letter {
+  background-color: #e78b00;
+  border-color: #e78b00;
+}
+
+.tag-justificatif {
+  background-color: #9c27b0;
+  border-color: #9c27b0;
+}
+
+.tag-verification {
+  background-color: #d30000;
+  border-color: #d30000;
+}
+
+.tag-treating {
+  background-color: #007092;
+  border-color: #007092;
+}
+
+.tag-review {
+  background-color: #fae100;
+  border-color: #fae100;
+}
+
+.tag-to-signed {
+  background-color: #0070d8;
+  border-color: #0070d8;
+}
+
+.tag-finance-review {
+  background-color: #c700ac;
+  border-color: #c700ac;
+}
+
+.tag-finalised {
+  background-color: #00b34a;
+  border-color: #00b34a;
+}
+
+.tag-cancel {
+  background-color: #a8a8a8;
+  border-color: #a8a8a8;
+}

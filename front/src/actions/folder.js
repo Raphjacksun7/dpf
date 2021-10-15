@@ -1,4 +1,8 @@
 import {
+  ADD_FOLDER_CLIENT_FAIL,
+  ADD_FOLDER_CLIENT_SUCCESS,
+  ADD_FOLDER_USER_FAIL,
+  ADD_FOLDER_USER_SUCCESS,
   CREATE_FOLDER_FAIL,
   CREATE_FOLDER_SUCCESS,
   DELETE_FOLDER_FAIL,
@@ -7,6 +11,10 @@ import {
   FECTH_FOLDERS_SUCCESS,
   FECTH_FOLDER_FAIL,
   FECTH_FOLDER_SUCCESS,
+  REMOVE_FOLDER_CLIENT_FAIL,
+  REMOVE_FOLDER_CLIENT_SUCCESS,
+  REMOVE_FOLDER_USER_FAIL,
+  REMOVE_FOLDER_USER_SUCCESS,
   SET_MESSAGE,
   UPDATE_FOLDER_FAIL,
   UPDATE_FOLDER_SUCCESS,
@@ -20,7 +28,7 @@ export const getFolders = () => (dispatch) => {
     (response) => {
       dispatch({
         type: FECTH_FOLDERS_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -52,7 +60,7 @@ export const getFolder = (id) => (dispatch) => {
     (response) => {
       dispatch({
         type: FECTH_FOLDER_SUCCESS,
-        payload:  response.data,
+        payload: response.data,
       });
 
       return Promise.resolve();
@@ -78,7 +86,6 @@ export const getFolder = (id) => (dispatch) => {
     }
   );
 };
-
 
 export const createFolder = (data) => (dispatch) => {
   return FolderService.createFolder(data).then(
@@ -154,6 +161,157 @@ export const updateFolder = (id, data) => (dispatch) => {
   );
 };
 
+export const addToFolderUser = (id, data) => (dispatch) => {
+  return FolderService.addToFolderUser(id, data).then(
+    (response) => {
+      dispatch({
+        type: ADD_FOLDER_USER_SUCCESS,
+        payload: response.data,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: ADD_FOLDER_USER_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const removeToFolderUser = (id, data) => (dispatch) => {
+  return FolderService.removeToFolderUser(id, data).then(
+    (response) => {
+      console.log(response);
+      dispatch({
+        type: REMOVE_FOLDER_USER_SUCCESS,
+        payload: response.data,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: REMOVE_FOLDER_USER_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const addToFolderClient = (id, data) => (dispatch) => {
+  return FolderService.addToFolderClient(id, data).then(
+    (response) => {
+      dispatch({
+        type: ADD_FOLDER_CLIENT_SUCCESS,
+        payload: response.data,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: ADD_FOLDER_CLIENT_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const removeToFolderClient = (id, data) => (dispatch) => {
+  return FolderService.removeToFolderClient(id, data).then(
+    (response) => {
+      console.log(response);
+      dispatch({
+        type: REMOVE_FOLDER_CLIENT_SUCCESS,
+        payload: response.data,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: REMOVE_FOLDER_CLIENT_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+
 export const deleteFolder = (id) => (dispatch) => {
   return FolderService.deleteFolder(id).then(
     (response) => {
@@ -190,5 +348,3 @@ export const deleteFolder = (id) => (dispatch) => {
     }
   );
 };
-
-

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter, HashRouter, Route, Switch } from "react-router-dom";
-import ProtectedRoute from "./protected.route";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { ProtectedRoute } from "./routes";
 import { history } from "./helpers/history";
 import "./assets/styles/index.scss";
 
@@ -15,6 +15,9 @@ const MainLayout = React.lazy(() => import("./layouts/MainLayout"));
 
 // Pages
 const Login = React.lazy(() => import("./pages/login/Login"));
+const CreatePassword = React.lazy(() =>
+  import("./pages/create-password/CreatePassword")
+);
 const Home = React.lazy(() => import("./pages/home/Home"));
 const Page404 = React.lazy(() => import("./pages/page404/Page404"));
 const Page500 = React.lazy(() => import("./pages/page500/Page500"));
@@ -30,6 +33,12 @@ class App extends Component {
               path="/login"
               name="Login"
               render={(props) => <Login {...props} />}
+            />
+            <Route
+              exact
+              path="/create-password/:id"
+              name="Create Password"
+              render={(props) => <CreatePassword {...props} />}
             />
             <Route
               exact

@@ -10,6 +10,12 @@ import {
   FECTH_USERS_SUCCESS,
   FECTH_USER_SUCCESS,
   FECTH_USER_FAIL,
+  REMOVE_USER_FOLDER_SUCCESS,
+  REMOVE_USER_FOLDER_FAIL,
+  ADD_USER_FOLDER_FAIL,
+  ADD_USER_FOLDER_SUCCESS,
+  CREATE_PASSWORD_SUCCESS,
+  CREATE_PASSWORD_FAIL,
 } from "./types";
 
 import * as UserService from "../services/user.service";
@@ -114,6 +120,43 @@ export const create = (data) => (dispatch) => {
   );
 };
 
+export const createPassword = (id, data) => (dispatch) => {
+  return UserService.createPassword(id, data).then(
+    (response) => {
+      dispatch({
+        type: CREATE_PASSWORD_SUCCESS,
+        payload: response.data,
+      });
+
+      // dispatch({
+      //   type: SET_MESSAGE,
+      //   payload: response.data,
+      // });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: CREATE_PASSWORD_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
 export const updateUser = (id, data) => (dispatch) => {
   return UserService.updateUser(id, data).then(
     (response) => {
@@ -151,17 +194,92 @@ export const updateUser = (id, data) => (dispatch) => {
   );
 };
 
-export const deleteUser = (id) => (dispatch) => {
-  return UserService.deleteUser(id).then(
+export const addUserFolder = (id, data) => (dispatch) => {
+  return UserService.addUserFolder(id, data).then(
     (response) => {
       dispatch({
-        type: DELETE_USER_SUCCESS,
-        payload: id
+        type: ADD_USER_FOLDER_SUCCESS,
+        payload: response.data,
       });
 
       dispatch({
         type: SET_MESSAGE,
         payload: response.data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: ADD_USER_FOLDER_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const removeUserFolder = (id, data) => (dispatch) => {
+  return UserService.removeUserFolder(id, data).then(
+    (response) => {
+      console.log(response);
+      dispatch({
+        type: REMOVE_USER_FOLDER_SUCCESS,
+        payload: response.data,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: REMOVE_USER_FOLDER_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const deleteUser = (id) => (dispatch) => {
+  return UserService.deleteUser(id).then(
+    (response) => {
+      dispatch({
+        type: DELETE_USER_SUCCESS,
+        payload: id,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response,
       });
 
       return Promise.resolve();

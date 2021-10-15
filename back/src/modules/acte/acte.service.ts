@@ -4,6 +4,7 @@ import { ActeRepository } from 'src/repositories/acte.repository';
 import { GetQueryDto } from '../../dto/getQueryDto';
 
 import { CreateActeDto } from './dto/createActe.dto';
+import { UpdateActeDto } from './dto/updateActe.dto';
 
 
 @Injectable()
@@ -25,6 +26,10 @@ export class ActeService {
 
     async getActes(getQueryDto: GetQueryDto) {
         return await this.acteRepository.get(getQueryDto);
+    }
+
+    async updateActe(id, updateActeDto: UpdateActeDto) {
+        return await this.acteRepository.updateActe(id, updateActeDto);
     }
 
     async deleteActe(id: MongooseSchema.Types.ObjectId) {

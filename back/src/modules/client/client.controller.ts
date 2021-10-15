@@ -4,6 +4,7 @@ import { Schema as MongooseSchema } from 'mongoose';
 import { GetQueryDto } from '../../dto/getQueryDto';
 import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/createClient.dto';
+import { DeleteClientFolderDto } from './dto/deleteClientFolder.dto';
 import { UpdateClientDto } from './dto/updateClient.dto';
 
 @Controller('clients')
@@ -17,13 +18,13 @@ export class ClientController {
     }
 
     @Get(':id')
-    async getClientById(id: MongooseSchema.Types.ObjectId, @Res() res: any) {
+    async getClientById(@Param('id') id: MongooseSchema.Types.ObjectId, @Res() res: any) {
         const user: any = await this.clientService.getClientById(id);
         return res.status(HttpStatus.OK).send(user);
     }
 
     @Get(':id/folders')
-    async getClientFolders(id: MongooseSchema.Types.ObjectId, @Res() res: any) {
+    async getClientFolders(@Param('id') id: MongooseSchema.Types.ObjectId, @Res() res: any) {
         const folders: any = await this.clientService.getFolderByClientId(id);
         return res.status(HttpStatus.OK).send(folders);
     }
@@ -35,22 +36,27 @@ export class ClientController {
     }
 
     @Put(':id')
-    async update(id: MongooseSchema.Types.ObjectId, @Body() updateClientDto: UpdateClientDto) {
+    async update(@Param('id') id: MongooseSchema.Types.ObjectId, @Body() updateClientDto: UpdateClientDto) {
         return this.clientService.updateClient(id, updateClientDto);
     }
 
-    @Put(':id/folders/new')
-    async addFolder(userId: MongooseSchema.Types.ObjectId, @Body() folderId: MongooseSchema.Types.ObjectId) {
+    @Put(':id/ressources')
+    async updateRessource(@Param('id') id: MongooseSchema.Types.ObjectId, @Body() updateClientDto: UpdateClientDto) {
+        return this.clientService.updateRessource(id, updateClientDto);
+    }
+
+    @Put(':id/folders/add')
+    async addFolder(@Param('id') userId: MongooseSchema.Types.ObjectId, @Body() folderId: MongooseSchema.Types.ObjectId) {
         return this.clientService.addFolder(userId, folderId);
     }
 
     @Delete(':id')
-    async delete(id: MongooseSchema.Types.ObjectId) {
+    async delete(@Param('id') id: MongooseSchema.Types.ObjectId) {
         return this.clientService.deleteClient(id);
     }
 
     @Delete(':id/folders/remove')
-    async removeFolder(userId: MongooseSchema.Types.ObjectId, @Body() folderId: MongooseSchema.Types.ObjectId) {
-        return this.clientService.removeClientFolder(userId, folderId);
+    async removeFolder(@Param('id') userId: MongooseSchema.Types.ObjectId, @Body() deleteClientFolder: DeleteClientFolderDto) {
+        return this.clientService.removeClientFolder(userId, deleteClientFolder);
     }
 }

@@ -16,12 +16,28 @@ export const getClients = () => {
   return baseHttpService.get("clients" + (queryStr ? `?${queryStr}` : ""));
 };
 
+export const getClient = (id) => {
+  return baseHttpService.get(`clients/${id}`);
+};
+
 export const createClient = async (data) => {
   return baseHttpService.post(`clients`, data);
 };
 
 export const updateClient = async (id, data) => {
   return baseHttpService.put(`clients/${id}`, data);
+};
+
+export const updateRessource = async (id, data) => {
+  return baseHttpService.put(`clients/${id}/ressources`, data);
+};
+
+export const addClientFolder = async (id, data) => {
+  return baseHttpService.put(`clients/${id}/folders/add`, data);
+};
+
+export const removeClientFolder = async (id, data) => {
+  return baseHttpService._delete(`clients/${id}/folders/remove`, data);
 };
 
 export const deleteClient = async (id) => {

@@ -9,13 +9,14 @@ import { SignInUserDto } from '../auth/dto/signInUser.dto';
 import { GetQueryDto } from '../dto/getQueryDto';
 import { Folder } from 'src/schema/folder.schema';
 import { UpdateUserDto } from 'src/modules/user/dto/updateUser.dto';
+import { CreatePasswordDto } from 'src/modules/user/dto/createPassword.dto';
+import { DeleteUserFolderDto } from 'src/modules/user/dto/deleteUserFolder.dto';
 
 export class UserRepository {
     constructor(
         @InjectModel(User.name)
-        private readonly userModel: Model<User>,
-    ) // private folderRepository: FolderRepository,
-    {}
+        private readonly userModel: Model<User>, // private folderRepository: FolderRepository,
+    ) {}
 
     /**
      * Fetches all users from database
@@ -80,7 +81,14 @@ export class UserRepository {
         try {
             const user: any = await this.userModel
                 .findById(id)
-                .populate('assignedFolder', null, Folder.name)
+                .populate({
+                    path: 'assignedFolder',
+                    model: 'Folder',
+                    populate: {
+                        path: 'users',
+                        model: 'User',
+                    },
+                })
                 .exec();
 
             if (!user) {
@@ -127,7 +135,7 @@ export class UserRepository {
     }
 
     async createUser(createUserDto: CreateUserDto) {
-        const { firstname, lastname, email, password, role } = createUserDto;
+        const { firstname, lastname, email, password, role, assignedFolder } = createUserDto;
         const userExists: any = await this.getUserByEmail(email);
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -139,6 +147,7 @@ export class UserRepository {
                 email: email,
                 password: hashedPassword,
                 role: role,
+                assignedFolder: assignedFolder,
             });
 
             try {
@@ -153,24 +162,50 @@ export class UserRepository {
         }
     }
 
-    async updateUser(id: MongooseSchema.Types.ObjectId, updateUser: UpdateUserDto): Promise<User> {
-        const { firstname, lastname, email, password, role  } = updateUser;
+    async createPassword(id: MongooseSchema.Types.ObjectId, createPasswordDto: CreatePasswordDto) {
+        const { password } = createPasswordDto;
+        const userExists: any = await this.getUserById(id);
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
-        const updateData = {
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-            password: hashedPassword,
-            role: role,
-            updatedAt: new Date()
-        };
 
+        if (userExists) {
+            try {
+                const user = await this.userModel
+                    .findOneAndUpdate(
+                        { _id: id },
+                        { password: hashedPassword },
+                        {
+                            new: true,
+                        },
+                    )
+                    .exec();
+                return user;
+            } catch (error) {
+                throw new InternalServerErrorException('Trying to create the user password but got this:', error);
+            }
+        } else {
+            throw new NotFoundException(`The ID= ${id} you provide does not exist in the database`);
+        }
+    }
+
+    async updateUser(id: MongooseSchema.Types.ObjectId, updateUser: UpdateUserDto): Promise<User> {
+        const { firstname, lastname, email, role } = updateUser;
         try {
             const user = await this.userModel
-                .findOneAndUpdate({ _id: id }, updateData, {
-                    new: true,
-                })
+                .findOneAndUpdate(
+                    { _id: id },
+                    {
+                        firstname,
+                        lastname,
+                        email,
+                        role,
+                        updatedAt: new Date(),
+                    },
+                    {
+                        new: true,
+                    },
+                )
+                .populate('assignedFolder', null, Folder.name)
                 .exec();
             return user;
         } catch (error) {
@@ -179,15 +214,32 @@ export class UserRepository {
     }
 
     async updateMany(filter: FilterQuery<User>, update: UpdateQuery<User>) {
-        return await this.userModel.updateMany(filter, update);
+        try {
+            return await this.userModel.updateMany(filter, update);
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
 
     async assignFolder(folderId: MongooseSchema.Types.ObjectId, userId: MongooseSchema.Types.ObjectId) {
         return await this.userModel.updateMany(folderId, userId);
     }
 
-    async deleteUser(id: MongooseSchema.Types.ObjectId) {
-        await this.userModel.deleteOne({ id });
+    async removeUserFolder(userId: MongooseSchema.Types.ObjectId, deleteUserFolder: DeleteUserFolderDto) {
+        const { folderId } = deleteUserFolder;
+        try {
+            const result: any = await this.userModel.updateMany({ _id: userId }, { $pull: { assignedFolder: folderId } });
+
+            if (!result.nModified)
+                throw new NotFoundException(`Folder with ID: ${folderId} Has Not Been Found in User ${userId}'s Folders`);
+
+            return await this.getUserById(userId);
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
-    
+
+    async deleteUser(id: MongooseSchema.Types.ObjectId) {
+        await this.userModel.deleteOne({ _id: id });
+    }
 }

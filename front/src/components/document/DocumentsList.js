@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Row,
   Col,
@@ -8,44 +8,39 @@ import {
   Table,
   Input,
   Tag,
-  Dropdown,
-  Menu,
   List,
   Avatar,
   Space,
   Tooltip,
-  Modal,
-  Popconfirm,
+  Empty,
+  message,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import AddDocument from "./AddDocument";
 import { useDispatch, useSelector } from "react-redux";
 import documentImg from "../../assets/document.png";
 import { getFolders } from "../../actions/folder";
+import tagColor from "../../helpers/tagColor";
 import "./styles.scss";
 import moment from "moment";
 
 const { Title } = Typography;
 
-const DocumentsList = ({ title, role }) => {
+const DocumentsList = ({ title }) => {
+  const authenticateUser = useSelector((state) => state.auth.user);
   const folders = useSelector((state) => state.folder.folders);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [folderFilter, setFolderFilter] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
     dispatch(getFolders());
-  }, []);
+  }, [dispatch]);
 
   const columns = [
     {
       title: "Nom du dossier",
-      //   title: (
-      //     <div>
-      //       <div>Name</div>
-      //       <Input />
-      //     </div>
-      //  ),
       dataIndex: "document",
       key: "document",
       render: (document) => {
@@ -102,34 +97,19 @@ const DocumentsList = ({ title, role }) => {
       dataIndex: "status",
       render: (status) => (
         <>
-          <Tag color={"volcano"} key={status}>
-            {status.toUpperCase()}
-          </Tag>
+          {status.isCancelled ? (
+            <>
+              <Tag className="tag-cancel">ANNULÉ</Tag>
+            </>
+          ) : (
+            <Tag className={tagColor(status.state)} key={status.state}>
+              {status.state.toUpperCase()}
+            </Tag>
+          )}
         </>
       ),
     },
   ];
-
-  const dataTable = (folders) => {
-    const data = [];
-    folders.forEach((folder) => {
-      data.push({
-        id: folder._id,
-        document: {
-          name: folder.name,
-          updatedAt: moment(folder.updatedAt).format("LL"),
-        },
-        ressource: folder.users,
-        date: moment(folder.createdAt).format("LL"),
-        status: folder.status,
-      });
-    });
-    return data;
-  };
-
-  if (role !== "admin") {
-    delete columns[1];
-  }
 
   const onCreate = () => {
     console.log("After form validate");
@@ -141,28 +121,28 @@ const DocumentsList = ({ title, role }) => {
   return (
     <>
       <Title level={2}>{title}</Title>
-      {role === "admin" ? (
-        <Row className="add-new">
-          <Button
-            className="d_btn_primary"
-            type="primary"
-            size="large"
-            onClick={() => {
-              setIsModalVisible(true);
-            }}
-          >
-            Nouveau dossier
-          </Button>
-          <AddDocument
-            visible={isModalVisible}
-            width={600}
-            onCreate={onCreate}
-            onCancel={() => {
-              setIsModalVisible(false);
-            }}
-          />
-        </Row>
-      ) : null}
+
+      <Row className="add-new">
+        <Button
+          className="d_btn_primary"
+          type="primary"
+          size="large"
+          onClick={() => {
+            setIsModalVisible(true);
+          }}
+        >
+          Nouveau dossier
+        </Button>
+        <AddDocument
+          visible={isModalVisible}
+          width={600}
+          onCreate={onCreate}
+          onCancel={() => {
+            setIsModalVisible(false);
+          }}
+        />
+      </Row>
+
       <Row>
         <Col span={8}>
           <Title level={4}>Liste des dossiers</Title>
@@ -170,27 +150,87 @@ const DocumentsList = ({ title, role }) => {
         <Col span={8} offset={8}>
           <div className="space-align-block">
             <Space size="large" align="baseline">
-              <Input placeholder="Rechercher" prefix={<SearchOutlined />} />
+              <Input
+                placeholder="Rechercher"
+                prefix={<SearchOutlined />}
+                style={{
+                  height: "40px",
+                  lineHeight: "30px",
+                  borderColor: "#8E8E93",
+                }}
+                value={folderFilter}
+                onChange={(e) => setFolderFilter(e.target.value.toLowerCase())}
+              />
             </Space>
           </div>
         </Col>
       </Row>
-      {folders ? (
-        <Table
-          columns={columns}
-          dataSource={dataTable(folders)}
-          scroll={{ x: 1000 }}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event) => {
-                history.push(`/document/${record.id}`);
-              },
-            };
-          }}
-        />
-      ) : (
-        <Table columns={columns} dataSource={[]} />
-      )}
+
+      <Table
+        className="table-dgt"
+        locale={{
+          emptyText: (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_DEFAULT}
+              imageStyle={{
+                height: 60,
+              }}
+              description={<span>Aucun résultat trouvé</span>}
+            ></Empty>
+          ),
+        }}
+        columns={columns}
+        dataSource={
+          folders
+            ? folders
+                .map((folder) => {
+                  return {
+                    id: folder._id,
+                    document: {
+                      name: folder.name,
+                      updatedAt: moment(folder.updatedAt).format("LL"),
+                    },
+                    ressource: folder.users,
+                    date: moment(folder.createdAt).format("LL"),
+                    status: {
+                      state: folder.status,
+                      isCancelled: folder.isCancelled,
+                    },
+                  };
+                })
+                .filter((item) => {
+                  return (
+                    item.document.name
+                      .toLowerCase()
+                      .indexOf(folderFilter.toLowerCase()) !== -1 ||
+                    item.date
+                      .toLowerCase()
+                      .indexOf(folderFilter.toLowerCase()) !== -1 ||
+                    item.document.updatedAt
+                      .toLowerCase()
+                      .indexOf(folderFilter.toLowerCase()) !== -1
+                  );
+                })
+            : []
+        }
+        scroll={{ x: 800 }}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              authenticateUser.role === "ADMIN" ? (
+                history.push(`/document/${record.id}`)
+              ) : (
+                <>
+                  {message.error(
+                    "Vous devez être administrateur pour accéder à un dossier annulé"
+                  )}
+                </>
+              );
+            },
+          };
+        }}
+        rowClassName={(record) => record.status.isCancelled && "disabled-row"}
+      />
     </>
   );
 };

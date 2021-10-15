@@ -13,6 +13,7 @@ import {
   FECTH_TASK_SUCCESS,
   SET_MESSAGE,
   UPDATE_TASK_FAIL,
+  UPDATE_TASK_SUCCESS,
   UPDATE_USER_SUCCESS,
 } from "./types";
 
@@ -151,7 +152,7 @@ export const createTask = (data) => (dispatch) => {
     (response) => {
       dispatch({
         type: CREATE_TASK_SUCCESS,
-        payload: response,
+        payload: response.data,
       });
 
       dispatch({
@@ -159,7 +160,7 @@ export const createTask = (data) => (dispatch) => {
         payload: response.data,
       });
 
-      return Promise.resolve();
+      return Promise.resolve(response.data);
     },
     (error) => {
       const message =
@@ -187,7 +188,7 @@ export const updateTask = (id, data) => (dispatch) => {
   return TaskService.updateTask(id, data).then(
     (response) => {
       dispatch({
-        type: UPDATE_USER_SUCCESS,
+        type: UPDATE_TASK_SUCCESS,
         payload: response.data,
       });
 

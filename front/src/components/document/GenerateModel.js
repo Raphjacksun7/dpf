@@ -66,7 +66,7 @@ const GenerateModel = () => {
                             reader.onload = function (e) {
                               setConfirmLoading(false);
                               console.log(dataURItoBlob(e.target.result));
-                              history.push(`/editor/new/${id}`, {
+                              history.replace(`/editor/new/${id}`, {
                                 data: dataURItoBlob(e.target.result),
                               });
                             };

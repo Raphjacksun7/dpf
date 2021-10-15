@@ -8,6 +8,8 @@ import messageReducer from "./message";
 import acteReducer from "./acte";
 import dModelReducer from "./d-model";
 import taskReducer from "./task";
+import sideBarReducer from "./side-bar";
+import mailerReducer from "./mailer";
 
 export default combineReducers({
   auth: authReducer,
@@ -18,5 +20,7 @@ export default combineReducers({
   dModel: dModelReducer,
   task: taskReducer,
   message: messageReducer,
+  sidebarShow: sideBarReducer,
+  mailerReducer: mailerReducer,
   form: formReducer,
 });

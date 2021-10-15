@@ -5,9 +5,13 @@ import { Model, Schema as MongooseSchema } from 'mongoose';
 import { DModel } from '../schema/d-model.schema';
 import { GetQueryDto } from '../dto/getQueryDto';
 import { CreateDModelDto } from 'src/modules/d-model/dto/createDModel.dto';
+import { UpdateDModelDto } from 'src/modules/d-model/dto/updateDModel.dto';
 
 export class DModelRepository {
-    constructor(@InjectModel(DModel.name) private readonly docModel: Model<DModel>) {}
+    constructor(
+        @InjectModel(DModel.name)
+        private readonly docModel: Model<DModel>,
+    ) {}
 
     /**
      * Fetches all dModels from database
@@ -28,14 +32,16 @@ export class DModelRepository {
                 dModels = await this.docModel
                     .find()
                     .skip(from)
-                    .sort({ createdAt: -1 })
+                    // .sort({ createdAt: -1 })
+                    .sort({'_id': -1})
                     .exec();
             } else {
                 dModels = await this.docModel
                     .find()
                     .skip(from)
                     .limit(limit)
-                    .sort({ createdAt: -1 })
+                    // .sort({ createdAt: -1 })
+                    .sort({'_id': -1})
                     .exec();
             }
 
@@ -78,9 +84,12 @@ export class DModelRepository {
         }
     }
 
-    async  getModelByFolder(id: MongooseSchema.Types.ObjectId): Promise<DModel> {
+    async getModelByFolder(id: MongooseSchema.Types.ObjectId): Promise<DModel> {
         try {
-            const dModel: any = await this.docModel.where({folder: id});
+            const dModel: any = await this.docModel
+                .where({ folder: id })
+                .sort({ updatedAt: -1 })
+                .exec();
             return dModel;
         } catch (error) {
             throw new InternalServerErrorException(error);
@@ -102,7 +111,34 @@ export class DModelRepository {
         }
     }
 
+    async updateDModel(id, updateDModelDto: UpdateDModelDto) {
+        const { name, fileURI, modelType } = updateDModelDto;
+        try {
+            const dModel = await this.docModel
+                .findOneAndUpdate(
+                    { _id: id },
+                    { name, fileURI, modelType, updatedAt: new Date() },
+                    {
+                        new: true,
+                    },
+                )
+                .exec();
+            return dModel;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
+
     async deleteModel(id: MongooseSchema.Types.ObjectId) {
-        await this.docModel.deleteOne({ id });
+        try {
+            const dModel = await this.docModel.findById(id);
+            if (!dModel) {
+                throw new NotFoundException(`DModel with ID: ${id} Not Found`);
+            }
+            dModel.remove();
+            return { message: 'DModel has been delete' };
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
 }

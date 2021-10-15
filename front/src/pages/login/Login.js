@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
+import { Input } from "antd";
 import CheckButton from "react-validation/build/button";
+import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import authImg from "../../assets/images/auth-image.jpg";
 
 import { login } from "../../actions/auth";
+import "./style.scss";
 
 const required = (value) => {
   if (!value) {
@@ -112,17 +114,20 @@ const Login = (props) => {
                 >
                   Mot de passe
                 </label>
-                <Input
+                <Input.Password
                   id="password"
                   name="password"
-                  type="password"
                   value={password}
                   onChange={onChangePassword}
                   validations={[required]}
-                  className="rounded shadow-sm relative block w-full px-3 py-2 
+                  className="rounded shadow-sm relative w-full px-3 py-2 
                   border border-gray-100 placeholder-gray-500 text-gray-900 
                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 
                   focus:z-10 sm:text-sm"
+                  placeholder="Entrez votre mot de passe"
+                  iconRender={(visible) =>
+                    visible ? <HiOutlineEye /> : <HiOutlineEyeOff />
+                  }
                 />
               </div>
             </div>
@@ -145,7 +150,7 @@ const Login = (props) => {
 
               <div className="text-sm">
                 <a
-                  href="#"
+                  href="/"
                   className="font-medium text-indigo-600 hover:text-blue-500"
                 >
                   Mot de passe oublié ?
@@ -159,7 +164,7 @@ const Login = (props) => {
                   className="group relative w-full flex justify-center py-2 px-4 border 
                 border-transparent text-sm font-medium rounded-md text-white bg-blue-600 
                 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
-                focus:ring-blue-500"
+                focus:ring-blue-500 btn-login"
                 >
                   {loading && (
                     <span className="spinner-border spinner-border-sm"></span>
@@ -184,6 +189,7 @@ const Login = (props) => {
         <img
           class="hidden object-cover w-full h-screen md:block"
           src={authImg}
+          alt=""
         />
       </div>
     </div>

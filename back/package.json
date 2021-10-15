@@ -5,9 +5,6 @@
     "author": "ADHERE",
     "private": true,
     "license": "MIT",
-    "engines": {
-        "node": "14.0.0"
-      },
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "nest build",
@@ -22,6 +19,7 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
+        "prestart:prod": "npm run build",
         "postinstall": "npm run prestart:prod"
     },
     "dependencies": {
@@ -43,6 +41,7 @@
         "cors": "^2.8.5",
         "dotenv": "^10.0.0",
         "mongoose": "^5.13.0",
+        "node-mailjet": "^3.3.1",
         "passport": "^0.4.1",
         "passport-jwt": "^4.0.0",
         "reflect-metadata": "^0.1.13",

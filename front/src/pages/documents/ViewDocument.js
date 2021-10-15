@@ -19,8 +19,6 @@ class ViewDocument extends React.Component {
   constructor() {
     super();
     this.saveModel = this.saveModel.bind(this);
-
-    this.idFolder = history.location.pathname.split("/")[3];
     this.state = {
       model: "",
       saveModal: false,
@@ -32,7 +30,7 @@ class ViewDocument extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getFolder(this.idFolder);
+    this.props.getFolder(this.props.history.location.pathname.split("/")[3]);
   }
 
   saveModel(blodFile, data) {
@@ -235,7 +233,9 @@ const mapStateToProps = (state) => ({
   folder: state.folder.folder,
 });
 
-export default withRouter(connect(mapStateToProps, {
-  getFolder,
-  createDModel,
-})(ViewDocument));
+export default withRouter(
+  connect(mapStateToProps, {
+    getFolder,
+    createDModel,
+  })(ViewDocument)
+);

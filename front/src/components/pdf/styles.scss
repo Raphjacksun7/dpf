@@ -1,0 +1,21 @@
+.page {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Poppins";
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.footer {
+  .actions {
+    display: flex;
+    justify-content: space-around;
+    .ant-btn-primary {
+      background: #004fbb;
+      border-color: #004fbb;
+    }
+    .ant-btn[disabled] {
+      color: #c8c8c8;
+    }
+  }
+}

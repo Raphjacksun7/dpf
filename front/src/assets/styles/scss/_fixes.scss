@@ -241,3 +241,156 @@ svg {
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 4%), 0 6px 16px 0 rgb(0 0 0 / 8%),
     0 9px 28px 8px rgb(0 0 0 / 0%);
 }
+
+.react-datepicker {
+  border: 1px solid #3f51b5 !important;
+}
+
+.react-datepicker__navigation-icon::before,
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow ::before {
+  border-color: #fff !important;
+}
+
+.react-datepicker__navigation-icon {
+  top: 8px !important;
+}
+
+.react-datepicker__month-container {
+  font-family: "Mulish";
+  .react-datepicker__header {
+    background-color: #3f51b5;
+    border-bottom: 1px solid #19266c;
+    .react-datepicker__current-month,
+    .react-datepicker__day-name,
+    .react-datepicker__day,
+    .react-datepicker__time-name {
+      color: #fff;
+      text-transform: capitalize;
+    }
+    .react-datepicker__day-names {
+      margin-bottom: 0;
+    }
+    .react-datepicker__day,
+    .react-datepicker__month-text,
+    .react-datepicker__quarter-text,
+    .react-datepicker__year-text {
+      color: #031321 !important;
+    }
+  }
+}
+
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="top"]
+  .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after,
+.react-datepicker-popper[data-placement^="top"]
+  .react-datepicker__triangle::after {
+  left: -124px !important;
+}
+
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after {
+  border-bottom-color: #3f51b5 !important;
+}
+.rpv-search__popover-input-counter {
+  width: 100% !important;
+}
+.rpv-open__input-wrapper {
+  display: none !important;
+}
+
+.table-dgt {
+  .ant-table-content {
+   
+    .disabled-row {
+      background-color: #f1f1f1;
+      td {
+        // border-bottom-width: 1px;
+        // border-top-width: 1px;
+        // border-color: #a8a8a8;
+        // .ant-ribbon-wrapper {
+        //   position: absolute;
+        //   right: 0;
+        //   top: 0;
+        //   .ant-ribbon {
+        //     top: -2px !important;
+        //     background-color: #a8a8a8;
+        //     .ant-ribbon-text {
+        //       text-transform: uppercase;
+        //       font-style: oblique;
+        //     }
+        //   }
+        //   .ant-ribbon.ant-ribbon-placement-end {
+        //     right: -2px !important;
+        //   }
+        //   .ant-ribbon.ant-ribbon-placement-end .ant-ribbon-corner {
+        //     border-color: #a8a8a8;
+        //   }
+        //   .ant-ribbon-corner {
+        //     border: none;
+        //   }
+        //   .ant-ribbon-corner::after {
+        //     color: rgb(241 241 241);
+        //   }
+        // }
+      }
+      td:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-left-width: 4px;
+        border-left-color: #a8a8a8;
+      }
+      td:last-child {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        // border-right-width: 1px;
+        border-right-color: #a8a8a8;
+      }
+    }
+  }
+}
+
+.ant-message {
+  z-index: 9999;
+  .anticon {
+    top: -3px;
+  }
+  .ant-message-error .anticon {
+    color: #051b32;
+  }
+  .ant-message-notice-content {
+    border-radius: 6px;
+    span {
+      font-weight: 500;
+    }
+  }
+}
+
+.result {
+  .ant-result-extra {
+    // display: flex;
+    // justify-content: space-evenly;
+    .ant-btn-primary {
+      border-color: #1976d2;
+      background: #1976d2;
+    }
+  }
+}
+
+.react-pdf__Document {
+  .react-pdf__message {
+    text-align: center;
+    padding: 40px 30px;
+  }
+  .react-pdf__message--error {
+    color: #df1304;
+  }
+}

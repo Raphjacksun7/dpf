@@ -1,21 +1,5 @@
 import React from "react";
-// froala
-// Require Editor JS files.
-import FroalaEditor from "react-froala-wysiwyg";
-import { FroalaConfig } from "./config/froala-config";
-import "froala-editor/js/languages/fr";
-
-// Require Editor CSS files.
-import "froala-editor/css/froala_style.min.css";
-import "froala-editor/css/froala_editor.pkgd.min.css";
-import "froala-editor/js/plugins.pkgd.min.js";
-
-// Require Font Awesome.
-import "font-awesome/css/font-awesome.css";
-
-// tribute
-import tribute from "./tribute";
-import "tributejs/dist/tribute.css";
+import { Editor as TinyEditor } from "@tinymce/tinymce-react";
 // To read the docx file
 import * as mammoth from "mammoth";
 import "./style.scss";
@@ -25,7 +9,6 @@ class Editor extends React.Component {
     super();
     this.state = {
       model: "",
-      config: FroalaConfig,
     };
   }
 
@@ -75,10 +58,44 @@ class Editor extends React.Component {
     }
   }
 
+  handleEditorChange(e) {
+    // console.log(e);
+  }
+
   render() {
     return (
       <>
-        <FroalaEditor config={this.state.config} model={this.state.model} />
+        <TinyEditor
+          apiKey="vloxe5omtla83noe6u0pkvwvwgcgwhfxlihru15ayyg5fygj"
+          initialValue={this.state.model}
+          onEditorChange={this.handleEditorChange}
+          onInit={() => {
+            document
+              .getElementsByTagName("iframe")[0]
+              .contentWindow.document.getElementById("tinymce").style.margin =
+              "2.5rem auto 0";
+            document
+              .getElementsByTagName("iframe")[0]
+              .contentWindow.document.getElementsByTagName(
+                "html"
+              )[0].style.background = "#f8f9fa";
+          }}
+          init={{
+            language: "fr_FR",
+            height: 800,
+            menubar: false,
+            selector: "textarea",
+            content_css: "document",
+            // skin: "fabric",
+            // skin: "material-outline",
+            skin: "material-classic",
+            icons: "fabric",
+            plugins: "print link image lists advlist wordcount table",
+            toolbar:
+              "undo redo print | styleselect | fontselect fontsizeselect bold italics underline forecolor backcolor | link image | table |alignleft aligncenter alignright alignjustify |lineheight | numlist bullist indent outdent | removeformat",
+            file_picker_types: "file image media",
+          }}
+        />
       </>
     );
   }

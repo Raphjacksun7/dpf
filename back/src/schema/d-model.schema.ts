@@ -10,7 +10,7 @@ export class DModel extends Document {
     @Prop({ required: true})
     fileURI: string;
 
-    @Prop({ required: true, enum: ['ACTE', 'LETTER'] })
+    @Prop({ required: true, enum: ['ACTE', 'LETTRE', 'JUSTIFICATIF'] })
     modelType: string;
 
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Folder',  required: true})

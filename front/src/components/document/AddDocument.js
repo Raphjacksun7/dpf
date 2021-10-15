@@ -7,7 +7,7 @@ import { getUsers } from "../../actions/user";
 import { createFolder } from "../../actions/folder";
 import { useDispatch, useSelector } from "react-redux";
 import { selectColorStyles } from "../../config/colors";
-import moment from "moment";
+import { TO_VERIFIED } from "../../constants";
 
 const { Title } = Typography;
 
@@ -43,8 +43,60 @@ const AddDocument = ({ visible, onCreate, onCancel }) => {
   };
 
   const serviceOptions = [
-    { value: "Achat/Vente", label: "Achat/Vente" },
+    { value: "Acte de vente", label: "Acte de vente" },
+    { value: "Donation", label: "Donation" },
+    { value: "Déclaration de propriété", label: "Déclaration de propriété" },
+    {
+      value: "Attestation de recasement ",
+      label: "Attestation de recasement ",
+    },
+    { value: "Titre foncier", label: "Titre foncier" },
   ];
+
+  const transformer = (data) => {
+    console.log(data);
+    return (
+      //Get fist Client fullname
+      data[0].label
+        // Split the string by space into a array
+        .split(" ")
+        // Go through the array taking only the first three characters, then transform them into capital letters
+        .map((s) => s.substring(0, 3).toUpperCase())
+        //Retransform the array into a string
+        .toString()
+        //Replace the comma with a underscore
+        .replace(/,/g, "_")
+    );
+  };
+
+  const folderNamme = (data, serviceType) => {
+    switch (serviceType) {
+      case "Acte de vente":
+        return `${transformer(data)}_ADV_${Math.floor(
+          1000 + Math.random() * 9000
+        )}`;
+      case "Donation":
+        return `${transformer(data)}_DON_${Math.floor(
+          1000 + Math.random() * 9000
+        )}`;
+      case "Déclaration de propriété":
+        return `${transformer(data)}_DDP_${Math.floor(
+          1000 + Math.random() * 9000
+        )}`;
+      case "Attestation de recasement":
+        return `${transformer(data)}_ADR_${Math.floor(
+          1000 + Math.random() * 9000
+        )}`;
+      case "Titre foncier":
+        return `${transformer(data)}_TTF_${Math.floor(
+          1000 + Math.random() * 9000
+        )}`;
+      default:
+        return `${transformer(data)}_ADV_${Math.floor(
+          1000 + Math.random() * 9000
+        )}`;
+    }
+  };
 
   const saveFolder = (data) => {
     const clients = data.clients.map((d) => {
@@ -55,9 +107,9 @@ const AddDocument = ({ visible, onCreate, onCancel }) => {
     });
 
     const user = {
-      name: "DOC_" + Math.floor(Math.random() * 4910) + 1595,
+      name: folderNamme(data.clients, data.service.value),
       service: data.service.value,
-      status: "VERIFICATION",
+      status: TO_VERIFIED,
       clients: clients,
       users: users,
     };
@@ -109,14 +161,7 @@ const AddDocument = ({ visible, onCreate, onCancel }) => {
         <Form form={form} name="form_in_modal" className="form">
           <div className="form-group">
             <label>Sélectionnez le(s) client(s)</label>
-            <Form.Item
-              name="clients"
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-            >
+            <Form.Item name="clients" rules={[rule]}>
               <Select
                 placeholder="Sélectionnez le(s) client(s)"
                 className="basic-single"

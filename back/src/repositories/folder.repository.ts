@@ -21,6 +21,8 @@ export class FolderRepository {
 
     async createFolder(createFolderDto: CreateFolderDto) {
         const { name, status, service, clients, users } = createFolderDto;
+        console.log(status);
+
         const newFolder = new this.folderModel({
             name: name,
             status: status,
@@ -40,18 +42,20 @@ export class FolderRepository {
     }
 
     async updateFolder(id, updateFolder: UpdateFolderDto) {
-        const { service, clients, users } = updateFolder;
-        const updateData = {
-            service: service,
-            updatedAt: new Date(),
-        };
-
         try {
             const folder = await this.folderModel
-                .findOneAndUpdate({ _id: id }, updateData, {
-                    new: true,
-                })
+                .findOneAndUpdate(
+                    { _id: id },
+                    { ...updateFolder, updatedAt: new Date() },
+                    {
+                        new: true,
+                    },
+                )
+                .populate('users', null, User.name)
+                .populate('clients', null, Client.name)
                 .exec();
+            console.log(folder);
+
             return folder;
         } catch (error) {
             throw new InternalServerErrorException(error);
@@ -75,7 +79,8 @@ export class FolderRepository {
                     .populate('users', null, User.name)
                     .populate('clients', null, Client.name)
                     .skip(from)
-                    .sort({ createdAt: -1 })
+                    // .sort({ createdAt: -1 })
+                    .sort({ _id: -1 })
                     .exec();
             } else {
                 folders = await this.folderModel
@@ -84,7 +89,8 @@ export class FolderRepository {
                     .populate('clients', null, Client.name)
                     .skip(from)
                     .limit(limit)
-                    .sort({ createdAt: -1 })
+                    // .sort({ createdAt: -1 })
+                    .sort({ _id: -1 })
                     .exec();
             }
 
@@ -114,6 +120,8 @@ export class FolderRepository {
             const folder: any = await this.folderModel
                 .findById(id)
                 .populate('assignedFolder', null, Folder.name)
+                .populate('users', null, User.name)
+                .populate('clients', null, Client.name)
                 .exec();
 
             if (!folder) {
@@ -126,7 +134,11 @@ export class FolderRepository {
     }
 
     async updateMany(filter?: FilterQuery<Folder>, update?: UpdateQuery<Folder>) {
-        return await this.folderModel.updateMany(filter, update);
+        try {
+            return await this.folderModel.updateMany(filter, update);
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
 
     async deleteFolder(id: MongooseSchema.Types.ObjectId) {

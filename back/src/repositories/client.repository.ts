@@ -16,12 +16,12 @@ export class ClientRepository {
     ) {}
 
     async createClient(createClientDto: CreateClientDto) {
-        const { firstname, lastname, idCardUrl } = createClientDto;
+        const { firstname, lastname, associatedDocuments } = createClientDto;
         try {
             const client = new this.clientModel({
                 firstname: firstname,
                 lastname: lastname,
-                idCardUrl: idCardUrl,
+                associatedDocuments: [...associatedDocuments],
             });
             console.log(client);
 
@@ -32,7 +32,7 @@ export class ClientRepository {
     }
 
     async getClients(query: GetQueryDto) {
-        // Paginar resultado
+        // Paginar resultado, I love spanish 😅
         let from = query.from || 0;
         from = Number(from);
 
@@ -83,7 +83,7 @@ export class ClientRepository {
     async getClientById(id: MongooseSchema.Types.ObjectId) {
         try {
             const client: any = await this.clientModel
-                .findById({ _id: id })
+                .findById(id)
                 .populate('folders', null, Folder.name)
                 .exec();
 
@@ -97,19 +97,17 @@ export class ClientRepository {
     }
 
     async updateClient(id: MongooseSchema.Types.ObjectId, updateClient: UpdateClientDto): Promise<Client> {
-        const { firstname, lastname,idCardUrl } = updateClient;
-        const updateData = {
-            firstname: firstname,
-            lastname: lastname,
-            idCardUrl: idCardUrl,
-            updatedAt: new Date()
-        };
-
+        const { firstname, lastname } = updateClient;
         try {
             const client = await this.clientModel
-                .findOneAndUpdate({ _id: id }, updateData, {
-                    new: true,
-                })
+                .findOneAndUpdate(
+                    { _id: id },
+                    { firstname, lastname, updatedAt: new Date() },
+                    {
+                        new: true,
+                    },
+                )
+                .populate('folders', null, Folder.name)
                 .exec();
             return client;
         } catch (error) {
@@ -117,9 +115,27 @@ export class ClientRepository {
         }
     }
 
-
     async addFolder(folderId: MongooseSchema.Types.ObjectId, clientId: MongooseSchema.Types.ObjectId) {
         return await this.clientModel.updateMany(folderId, clientId);
+    }
+
+    async updateRessource(id: MongooseSchema.Types.ObjectId, updateClient: UpdateClientDto): Promise<Client> {
+        const { associatedDocuments } = updateClient;
+        try {
+            const client = await this.clientModel
+                .findOneAndUpdate(
+                    { _id: id },
+                    { associatedDocuments, updatedAt: new Date() },
+                    {
+                        new: true,
+                    },
+                )
+                .populate('folders', null, Folder.name)
+                .exec();
+            return client;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
 
     async updateMany(filter: FilterQuery<Client>, update: UpdateQuery<Client>) {
@@ -127,6 +143,6 @@ export class ClientRepository {
     }
 
     async deleteClient(id: MongooseSchema.Types.ObjectId) {
-        await this.clientModel.deleteOne({ id });
+        await this.clientModel.deleteOne({ _id: id });
     }
 }

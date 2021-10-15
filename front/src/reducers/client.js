@@ -7,6 +7,13 @@ import {
   UPDATE_CLIENT_FAIL,
   DELETE_CLIENT_SUCCESS,
   DELETE_CLIENT_FAIL,
+  FECTH_CLIENT_SUCCESS,
+  REMOVE_CLIENT_FOLDER_SUCCESS,
+  REMOVE_CLIENT_FOLDER_FAIL,
+  ADD_CLIENT_FOLDER_SUCCESS,
+  ADD_CLIENT_FOLDER_FAIL,
+  UPDATE_CLIENT_RESSOURCES_SUCCESS,
+  UPDATE_CLIENT_RESSOURCES_FAIL,
 } from "../actions/types";
 
 const initialState = {
@@ -24,6 +31,12 @@ const clientReducer = (state = initialState, action) => {
         clients: payload.data,
       };
 
+    case FECTH_CLIENT_SUCCESS:
+      return {
+        ...state,
+        client: payload,
+      };
+
     case CREATE_CLIENT_SUCCESS:
       return { ...state, clients: [payload, ...state.clients] };
 
@@ -35,8 +48,9 @@ const clientReducer = (state = initialState, action) => {
     case UPDATE_CLIENT_SUCCESS:
       return {
         ...state,
+        client: payload,
         clients: state.clients.map((client) =>
-          client.id === payload.id ? (client = payload) : client
+          client._id === payload._id ? (client = payload) : client
         ),
       };
 
@@ -45,10 +59,52 @@ const clientReducer = (state = initialState, action) => {
         ...state,
       };
 
+    case UPDATE_CLIENT_RESSOURCES_SUCCESS:
+      return {
+        ...state,
+        client: payload,
+        clients: state.clients.map((client) =>
+          client._id === payload._id ? (client = payload) : client
+        ),
+      };
+
+    case UPDATE_CLIENT_RESSOURCES_FAIL:
+      return {
+        ...state,
+      };
+
+    case ADD_CLIENT_FOLDER_SUCCESS:
+      return {
+        ...state,
+        client: payload,
+        clients: state.clients.map((client) =>
+          client._id === payload._id ? (client = payload) : client
+        ),
+      };
+
+    case ADD_CLIENT_FOLDER_FAIL:
+      return {
+        ...state,
+      };
+
+    case REMOVE_CLIENT_FOLDER_SUCCESS:
+      return {
+        ...state,
+        client: payload,
+        clients: state.clients.map((client) =>
+          client._id === payload._id ? (client = payload) : client
+        ),
+      };
+
+    case REMOVE_CLIENT_FOLDER_FAIL:
+      return {
+        ...state,
+      };
+
     case DELETE_CLIENT_SUCCESS:
       return {
         ...state,
-        clients: state.clients.filter((client) => client.id !== payload),
+        clients: state.clients.filter((client) => client._id !== payload),
       };
 
     case DELETE_CLIENT_FAIL:

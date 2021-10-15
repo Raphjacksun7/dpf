@@ -1,35 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
-.form {
-  margin-top: 35px;
-  .form-group {
-    font-family: "Poppins", sans-serif;
-    label {
-      font-weight: 600;
-    }
-    input {
-      font-weight: 400;
-      border: none;
-      box-sizing: border-box;
-      border-radius: 4px;
-      padding: 6.5px 12px;
-      font-size: 14px;
-      border-color: hsl(0, 0%, 80%);
-      border-style: solid;
-      border-width: 1px;
-    }
-  }
-}
-
 .block {
   color: #252733;
   font-family: "Mulish";
+  margin-bottom: 4em;
   .title {
     display: flex;
+    h2 {
+      margin-bottom: 0.5em;
+    }
     .badge {
       padding: 0.6em;
       border-radius: 0.8rem;
-      background-color: #d60303;
+      // background-color: #d60303;
       color: #fff;
       height: 23px;
       margin-left: 10px;
@@ -54,6 +37,8 @@
   }
   .subtitle {
     font-weight: bold;
+    font-size: 16px;
+    margin-left: 2.5rem;
     svg {
       margin-left: 15px;
       color: #920000;
@@ -96,10 +81,6 @@
   // border-radius: 2px;
 }
 
-.ant-steps {
-  display: none;
-}
-
 .steps-content {
   margin-top: 4em;
 }
@@ -120,6 +101,9 @@
 }
 
 .hideFooter {
+  .ant-modal-content .ant-modal-body {
+    padding: 60px;
+  }
   .ant-modal-footer {
     display: none;
   }
@@ -129,5 +113,77 @@
   background-color: rgb(85, 174, 255);
   .ant-avatar-string {
     font-size: 12px;
+  }
+}
+
+.proof-list {
+  .ant-list-item-meta-title {
+    cursor: pointer;
+  }
+  .ant-list-item-meta {
+    align-items: center;
+    .ant-list-item-meta-avatar {
+      svg {
+        font-size: 30px;
+      }
+    }
+    .ant-list-item-meta-description {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      svg {
+        font-size: 16px;
+        margin-right: 8px;
+      }
+      span {
+        font-weight: 500;
+        margin-left: 2px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.validation-stepper {
+  .ant-btn-primary {
+    float: right;
+    margin-bottom: 2em;
+    background-color: #1977d3;
+    border-color: #1977d3;
+  }
+  .ant-steps-item-title {
+    font-weight: 500;
+    font-family: "Mulish";
+  }
+
+  .validation-proof {
+    margin-top: 3em;
+    h3 {
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .ant-btn {
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      border-radius: 2px;
+      border-color: #1977d3;
+      background-color: #1977d3;
+      color: white;
+    }
+  }
+}
+
+@media screen and (min-width: 560px) {
+  .validation-stepper .ant-steps-dot .ant-steps-item-content {
+    width: 180px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .validation-stepper .ant-btn.ant-btn-primary,
+  .ant-steps.ant-steps-horizontal.ant-steps-label-vertical.ant-steps-dot {
+    display: none;
   }
 }

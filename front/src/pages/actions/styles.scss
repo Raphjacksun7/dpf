@@ -7,12 +7,19 @@
 
 .action-list {
   .ant-list-item {
-    border-bottom: none;
-    background-color: #f7f7f8;
-    border-radius: 6px;
+    background-color: #ffffff;
+    border-color: #ebebeb;
+    border-radius: 5px;
     cursor: pointer;
     margin-bottom: 1rem;
     padding: 10px 20px;
+    .ant-list-item-meta-description {
+      svg {
+        color: #9ca3af;
+        font-size: 18px;
+        margin-right: 5px;
+      }
+    }
     .extra-detail {
       font-weight: 600;
       color: #9ca3af;
@@ -20,9 +27,38 @@
   }
 
   .active {
-    background-color: #a1c6f7;
+    background-color: #eceff2;
+    border: none;
     .extra-detail {
       color: #484848;
     }
   }
+  .ant-list-item :hover {
+    .ant-list-item-meta-title {
+      color: #0056c7;
+      font-size: 16px;
+      -webkit-transition: font-size 0.2s ease-in-out;
+      -moz-transition: font-size 0.2s ease-in-out;
+      -o-transition: font-size 0.2s ease-in-out;
+      transition: font-size 0.2s ease-in-out;
+    }
+    .ant-list-item-meta-description {
+      font-weight: 500;
+      font-size: 15px;
+    }
+  }
 }
+
+.search-block {
+  margin-bottom: 40px;
+  .ant-input-affix-wrapper {
+    border-radius: 5px;
+    border-color: #c1c1c1;
+    .ant-input {
+      font-weight: 500;
+      font-family: "Mulish";
+      margin-left: 10px;
+    }
+  }
+}
+

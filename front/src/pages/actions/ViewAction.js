@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { Button, PageHeader, Tag, notification, Spin } from "antd";
 import { Editor } from "../../components";
@@ -6,7 +6,7 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import roundSave from "@iconify/icons-ic/round-save";
 
-import { getTask } from "../../actions/task";
+import { getTask, updateTask } from "../../actions/task";
 import { getDModel } from "../../actions/d-model";
 import { updateDModel } from "../../actions/d-model";
 import { CLOUDINARY_NAME, UPLOAD_PRESET } from "../../constants";
@@ -18,16 +18,18 @@ import moment from "moment";
 const ViewDocument = ({ location }) => {
   const { id } = useParams();
   const [updating, setUpdating] = useState(false);
-  const [modelData, setModelData] = useState();
 
   const task = useSelector((state) => state.task.task);
   const dModel = useSelector((state) => state.dModel.dModel);
+  const taskRef = useRef();
+  taskRef.current = task;
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
+    console.log(location);
     dispatch(getTask(id)).then(() => {
-      dispatch(getDModel(task.ressourceId));
+      dispatch(getDModel(taskRef.current.ressourceId));
     });
   }, []);
 
@@ -36,8 +38,7 @@ const ViewDocument = ({ location }) => {
     reader.readAsDataURL(blodFile);
     reader.onloadend = function () {
       const base64data = reader.result;
-      this.setState({ saveModelLoading: true });
-      this.setState({ saveModal: false });
+      setUpdating(true);
       const formData = new FormData();
       formData.append("file", base64data);
       formData.append("upload_preset", UPLOAD_PRESET);
@@ -50,28 +51,38 @@ const ViewDocument = ({ location }) => {
           )
           .then(async (uploadRes) => {
             console.log(uploadRes);
-            this.props
-              .updateDModel(this.props.dModel._id, {
-                ...this.props.dModel,
+            dispatch(
+              updateDModel(dModel._id, {
+                ...dModel,
                 fileURI: uploadRes.data.url,
               })
-              .then((onSaveRes) => {
-                notification.success({
-                  message: "Votre modèle a été mise à jour avec succès !",
-                  description: null,
-                  duration: 3,
-                });
-                this.setState({ saveModelLoading: false });
+            )
+              .then(() => {
+                dispatch(
+                  updateTask(task._id, {
+                    ...task,
+                    status: "FAIRE",
+                  })
+                )
+                  .then(() => {
+                    notification.success({
+                      message: "Vos modifications ont été enregistrer !",
+                      description: null,
+                      duration: 3,
+                    });
+                    setUpdating(false);
+                  })
+                  .catch(() => setUpdating(false));
               })
               .catch((onSaveError) => {
                 notification.error({
                   message: "Une erreur !",
                   description:
-                    "L'enregistrement du modèle a échoué, vérifiez votre connexion Internet et réessayez.",
+                    "L'enregistrement des modifications a échoué, vérifiez votre connexion Internet et réessayez.",
                   duration: 3,
                 });
                 console.log(onSaveError);
-                this.setState({ saveModelLoading: false });
+                setUpdating(false);
               });
           })
           .catch((uploadError) => {
@@ -82,12 +93,12 @@ const ViewDocument = ({ location }) => {
               duration: 3,
             });
             console.log(uploadError);
-            this.setState({ saveModelLoading: false });
+            setUpdating(false);
           });
       } catch (error) {
         console.log(error);
       }
-    }.bind(this);
+    };
   };
 
   return (
@@ -108,7 +119,12 @@ const ViewDocument = ({ location }) => {
                 />
               }
               onClick={() => {
-                // updateModel(htmlDocx.asBlob("model"));
+                const html =
+                  '<!DOCTYPE html><html><head lang="fr">' +
+                  '<meta charset="UTF-8"><title></title></head><body>' +
+                  document.getElementsByClassName("fr-element")[0].innerHTML +
+                  "</body></html>";
+                updateModel(new Blob([html]));
               }}
             >
               Envoyer vos modifications
@@ -121,7 +137,7 @@ const ViewDocument = ({ location }) => {
         spinning={updating}
         tip="Enregistrement des modifications en cours..."
       >
-        <Editor model={modelData} contentType={"html"} />
+        <Editor model={location.state} contentType={"html"} />
       </Spin>
     </>
   );

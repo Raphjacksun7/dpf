@@ -11,10 +11,24 @@ export class Folder {
     @Prop({ type: String })
     name: string;
 
-    @Prop({ type: String ,  enum: ['VERIFICATION', 'SIGNATURE', 'VERI FINANCE', 'REVISION'] })
+    @Prop({
+        type: String,
+        enum: [
+            'À VERIFIER',
+            'EN VERIFICATION',
+            'À TRAITER',
+            'EN TRAITEMENT',
+            'REVISION',
+            'V-FINANCE',
+            'À SIGNER',
+            'FINALISÉ',
+            'ARCHIVÉ',
+            'ANNULÉ',
+        ],
+    })
     status: string;
 
-    @Prop({ type: String})
+    @Prop({ type: String })
     service: string;
 
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Client' }] })
@@ -23,7 +37,10 @@ export class Folder {
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'User' }] })
     users: User[];
 
-    @Prop({ type: Date })
+    @Prop({ type: Boolean, default: false })
+    is_cancelled: boolean;
+
+    @Prop({ type: Date, default: Date.now })
     updatedAt: Date;
 
     @Prop({ type: Date, default: Date.now })

@@ -3,6 +3,8 @@ import { Schema as MongooseSchema } from 'mongoose';
 
 import { GetQueryDto } from '../../dto/getQueryDto';
 import { CreateFolderDto } from './dto/createFolder.dto';
+import { DeleteClientFolderDto } from './dto/deleteClientFolder.dto';
+import { DeleteFolderUserDto } from './dto/deleteFolderUser.dto';
 import { UpdateFolderDto } from './dto/updateFolder.dto';
 import { FolderService } from './folder.service';
 
@@ -36,9 +38,29 @@ export class FolderController {
         return res.status(HttpStatus.OK).send(newfolder);
     }
 
+    @Put(':id/users/add')
+    async addUserToFolder(@Param('id') folderId: any, @Body() userIds: any) {
+        return this.folderService.addUserToFolder(folderId, userIds);
+    }
+
+    @Put(':id/clients/add')
+    async addClientToFolder(@Param('id') folderId: any, @Body() userIds: any) {
+        return this.folderService.addClientToFolder(folderId, userIds);
+    }
+
     @Delete(':id')
     async delete(@Param('id') id: any, @Res() res: any) {
         const response: any = await this.folderService.deleteFolder(id);
         return res.status(HttpStatus.OK).send(response);
+    }
+
+    @Delete(':id/users/remove')
+    async removeUserToFolder(@Param('id') folderId: any, @Body() deleteFolderUser: DeleteFolderUserDto) {
+        return this.folderService.removeUserToFolder(folderId, deleteFolderUser);
+    }
+
+    @Delete(':id/clients/remove')
+    async removeClientFolder(@Param('id') folderId: any, @Body() deleteClientFolder: DeleteClientFolderDto) {
+        return this.folderService.removeClientFolder(folderId, deleteClientFolder);
     }
 }
